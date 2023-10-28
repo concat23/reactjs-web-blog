@@ -1,0 +1,20 @@
+.listBlog-wrap{
+    display:grid;
+    grid-template-columns: repeat(3,1fr);
+    grid-gap: 3rem;
+}
+
+/* responsive */
+
+@media(max-width:768px) {
+    .listBlog-wrap{
+        grid-template-columns: repeat(2,1fr);
+    }
+}
+
+
+@media(max-width:600px) {
+    .listBlog-wrap{
+        grid-template-columns: repeat(1,1fr);
+    }
+}
