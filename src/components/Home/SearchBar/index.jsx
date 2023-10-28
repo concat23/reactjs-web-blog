@@ -10,11 +10,11 @@ export const SearchBar = ({value, handleSearchKey, clearSearch, formSubmit}) => 
                 placeholder='Search By Category' 
                 value={value} />
             
-            { value  && <span onClick={clearSearch}>X</span> }
+                { value  && <span onClick={clearSearch}>X</span> }
 
             <button>Go</button>
         </form>
     </div>
   )
 
-export default SearchBar
+export default SearchBar;

@@ -2,7 +2,7 @@ export const blogList = [
     {
         id: 1,
         title: "Example Blog 1",
-        category: "Technology",
+        category: "Development",
         subCategory: ["Programming", "Web Development", "Frontend"],
         description: "This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. ",
         authorName: "Andy Bang",
@@ -32,6 +32,39 @@ export const blogList = [
         createdAt: "2023-10-30",
         cover: "assets/images/pic-null.png",
     },
+    {
+        id: 4,
+        title: "Example Blog 4",
+        category: "Shopping",
+        subCategory: ["Programming", "Web Development", "Frontend"],
+        description: "This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. ",
+        authorName: "Andy Bang",
+        authorAvatar: "assets/images/pic-null.png",
+        createdAt: "2023-10-28",
+        cover: "assets/images/pic-null.png",
+    },
+    {
+        id: 5,
+        title: "Example Blog 5",
+        category: "Travel",
+        subCategory: ["Adventure", "Hiking", "Backpacking"],
+        description: "This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. ",
+        authorName: "Andy Bang",
+        authorAvatar: "assets/images/pic-null.png",
+        createdAt: "2023-10-29",
+        cover: "assets/images/pic-null.png",
+    },
+    {
+        id: 6,
+        title: "Example Blog 6",
+        category: "Food",
+        subCategory: ["Recipes", "Desserts", "Vegetarian"],
+        description: "This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. This is an example blog about programming. ",
+        authorName: "Andy Bang",
+        authorAvatar: "assets/images/pic-null.png",
+        createdAt: "2023-10-30",
+        cover: "assets/images/pic-null.png",
+    }
 ];
 
 
