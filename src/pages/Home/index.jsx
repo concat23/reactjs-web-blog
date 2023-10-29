@@ -23,7 +23,7 @@ export const Home = () => {
   }
 
   const handleClearSearch = () =>{
-    setBlogs(blogList);
+    setBlogs(blogs);
     setSearchKey('');
   }
   return (
@@ -37,7 +37,7 @@ export const Home = () => {
                    handleSearchKey ={ (e) => setSearchKey(e.target.value)} 
                   />
         {/* Blog List & Empty List  */}
-        {!blogs.length ? <EmptyList /> : <BlogList blogs={blogList}/> } 
+        {!blogs.length ? <EmptyList /> : <BlogList blogs={blogs}/> } 
     </div>
   )
 }
