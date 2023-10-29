@@ -1,5 +1,10 @@
-import React from 'react'
-
+import React, { useEffect, useState } from 'react'
+import { Link} from 'react-router-dom/cjs/react-router-dom'
+import { useParams } from 'react-router-dom';
+import { blogList } from '../../components/config/data';
+import Chip from '../../components/common/Chip';
+import EmptyList from '../../components/common/EmptyList';
+import './style.css';
 export const Blog = () => {
    const params = useParams();
    const id = params.id;
