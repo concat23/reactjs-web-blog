@@ -4,6 +4,7 @@ import SearchBar from '../../components/Home/SearchBar'
 import BlogList from '../../components/Home/BlogList';
 import { blogList} from '../../components/config/data'
 import EmptyList from '../../components/common/EmptyList';
+import Top from '../../components/Home/Top';
 
 export const Home = () => {
   const [blogs, setBlogs] = useState(blogList);
@@ -28,6 +29,8 @@ export const Home = () => {
   }
   return (
     <div>
+       {/* Page header  */}
+      <Top />
        {/* Page header  */}
         <Header />
        {/* Search bar  */}
