@@ -7,7 +7,7 @@ export const Top = () => {
     <header>
          <div className="nav-area">
                 <Link to="/" className="logo">
-                    Logo
+                    Blog
                 </Link>
                 <NavBar />
             </div>  

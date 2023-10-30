@@ -4,7 +4,7 @@ export const menuItems = [
       url: '/',
     },
     {
-      title: 'Level I.0',
+      title: 'Services',
       url: '/level-i-0',
       submenu: [
         {
@@ -21,16 +21,7 @@ export const menuItems = [
             },
             {
               title: 'Level III.1',
-              submenu: [
-                {
-                  title: 'Level V.0',
-                  url: 'level-5-0',
-                },
-                {
-                  title: 'Level V.1',
-                  url: 'level-5-1',
-                },
-              ],
+              url:''
             },
           ],
         },
@@ -41,7 +32,7 @@ export const menuItems = [
       ],
     },
     {
-        title: 'Level I.1',
+        title: 'Colections',
         url: '/level-1-1',
         submenu: [
             {
@@ -58,16 +49,91 @@ export const menuItems = [
                 },
                 {
                   title: 'Level III.1',
-                  submenu: [
-                    {
-                      title: 'Level V.0',
-                      url: 'level-5-0',
-                    },
-                    {
-                      title: 'Level V.1',
-                      url: 'level-5-1',
-                    },
-                  ],
+                  url:''
+                },
+              ],
+            },
+            {
+              title: 'Level II.1',
+              url: 'level-2-0',
+            },
+          ],
+      },
+      {
+        title: 'Connection',
+        url: '/level-1-1',
+        submenu: [
+            {
+              title: 'Level II.0',
+              url: 'level-ii-0',
+            },
+            {
+              title: 'Level II.1',
+              url: 'level-ii-1',
+              submenu: [
+                {
+                  title: 'Level III.0',
+                  url: 'level-iii-0',
+                },
+                {
+                  title: 'Level III.1',
+                  url:''
+                },
+              ],
+            },
+            {
+              title: 'Level II.1',
+              url: 'level-2-0',
+            },
+          ],
+      },
+      {
+        title: 'Technology',
+        url: '/level-1-1',
+        submenu: [
+            {
+              title: 'Level II.0',
+              url: 'level-ii-0',
+            },
+            {
+              title: 'Level II.1',
+              url: 'level-ii-1',
+              submenu: [
+                {
+                  title: 'Level III.0',
+                  url: 'level-iii-0',
+                },
+                {
+                  title: 'Level III.1',
+                  url:''
+                },
+              ],
+            },
+            {
+              title: 'Level II.1',
+              url: 'level-2-0',
+            },
+          ],
+      },
+      {
+        title: 'Sport',
+        url: '/level-1-1',
+        submenu: [
+            {
+              title: 'Level II.0',
+              url: 'level-ii-0',
+            },
+            {
+              title: 'Level II.1',
+              url: 'level-ii-1',
+              submenu: [
+                {
+                  title: 'Level III.0',
+                  url: 'level-iii-0',
+                },
+                {
+                  title: 'Level III.1',
+                  url:''
                 },
               ],
             },
