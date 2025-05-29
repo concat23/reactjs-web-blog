@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { AuthContext } from '../../contexts/AuthContext';
 import { Navigate } from 'react-router-dom';
+import Button from '../../components/Button/Button';
+import Input from '../../components/Input/Input';
 
 class Login extends Component {
   static contextType = AuthContext;
@@ -37,32 +39,44 @@ class Login extends Component {
         <h2>Admin Login</h2>
         <form onSubmit={this.handleSubmit}>
           <div>
-            <label>Tên đăng nhập</label>
-            <input
-              type="text"
+           <Input
+              label="Tên đăng nhập"
               name="username"
               value={this.state.username}
               onChange={this.handleChange}
-              required
-              autoFocus
+              placeholder="Nhập tên đăng nhập"
+              error={this.state.error ? "Tên đăng nhập không hợp lệ" : ''}
+               required={true}  
             />
           </div>
           <div style={{ marginTop: 10 }}>
-            <label>Mật khẩu</label>
-            <input
+            <Input
+              label="Mật khẩu"
               type="password"
               name="password"
               value={this.state.password}
               onChange={this.handleChange}
-              required
+              placeholder="Nhập mật khẩu"
+              error={this.state.error ? "Mật khẩu không hợp lệ" : ''}
+               required={true}  
             />
           </div>
           {this.state.error && (
             <p style={{ color: 'red', marginTop: 10 }}>{this.state.error}</p>
           )}
-          <button type="submit" style={{ marginTop: 15 }}>
-            Đăng nhập
-          </button>
+        <Button
+            type="submit"
+            label="Đăng nhập"
+            variant="primary"
+            fontSize="16px"
+            fontWeight="bold"
+            borderRadius="6px"
+            padding="10px 20px"
+            margin="15px 0 0 0"
+            width="100%"
+          />
+
+
         </form>
       </div>
     );

@@ -1,0 +1,49 @@
+@use '../color' as *;
+
+.input-wrapper {
+  display: flex;
+  flex-direction: column;
+  margin: 8px 0;
+  width: 100%;
+
+  label {
+    margin-bottom: 4px;
+    font-weight: 600;
+    color: $color-text;
+  }
+}
+
+.custom-input {
+  font-size: 16px;
+  padding: 10px 12px;
+  border: 1.5px solid $color-primary;
+  border-radius: 6px;
+  color: $color-text;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  outline: none;
+
+  &::placeholder {
+    color: $color-placeholder;
+  }
+
+  &:focus:not(:disabled) {
+    border-color: $color-primary-focus;
+    box-shadow: 0 0 5px $color-primary-focus;
+  }
+
+  &:disabled {
+    background-color: $color-disabled-bg;
+    border-color: $color-disabled-border;
+    cursor: not-allowed;
+    color: darken($color-text, 30%);
+  }
+
+  &.error {
+    border-color: $color-error;
+    &:focus {
+      box-shadow: 0 0 5px $color-error;
+    }
+  }
+}

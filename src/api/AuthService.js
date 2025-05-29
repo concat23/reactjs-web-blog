@@ -1,9 +1,9 @@
-import config from './../config.js';
 
 export default class AuthService {
+
   constructor() {
-    this.tokenKey = config.TOKEN_KEY;
-    this.apiBaseUrl = config.API_BASE_URL;
+    this.apiBaseUrl = 'http://localhost:8555/api';
+    this.tokenKey = 'admin_token';
   }
 
   async login(email, password) {
