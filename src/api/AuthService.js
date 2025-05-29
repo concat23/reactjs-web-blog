@@ -23,6 +23,10 @@ export default class AuthService {
 
   async logout() {
     const token = localStorage.getItem(this.tokenKey);
+    if (!token) {
+      this.clearClientSession();
+      return;
+    }
     const response = await fetch(`${this.apiBaseUrl}/authentication/logout`, {
       method: 'POST',
       headers: {
@@ -35,6 +39,11 @@ export default class AuthService {
       throw new Error(error.message || 'Logout failed');
     }
     localStorage.removeItem(this.tokenKey);
+  }
+
+  clearClientSession() {
+    localStorage.removeItem(this.tokenKey);
+    sessionStorage.removeItem('progressHasRun');
   }
 
   isAuthenticated() {

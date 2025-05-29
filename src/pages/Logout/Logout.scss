@@ -1,0 +1,46 @@
+.logout-button {
+  padding: 10px 16px;
+  font-size: 0;
+  background: linear-gradient(135deg, #ff5f6d, #ffc371);
+  border: none;
+  border-radius: 8px;           // Bo nhẹ góc thôi
+  cursor: pointer;
+  transition: 
+    background 0.3s ease,
+    transform 0.15s ease;
+  user-select: none;
+  outline: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+
+  svg {
+    color: #fff;
+    width: 24px;
+    height: 24px;
+    transition: color 0.3s ease;
+  }
+
+  &:hover {
+    background: linear-gradient(135deg, #ff3b4a, #ffb347);
+
+    svg {
+      color: #fff9e6;
+    }
+  }
+
+  &:active {
+    background: linear-gradient(135deg, #e14c5f, #d99e53); // Màu tối hơn khi nhấn
+
+    svg {
+      color: #ffdbb3;
+    }
+  }
+
+  &:focus-visible {
+    outline: 2px solid #ffb347;
+    outline-offset: 2px;
+  }
+}
