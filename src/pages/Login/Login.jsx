@@ -3,6 +3,8 @@ import { AuthContext } from '../../contexts/AuthContext';
 import { Navigate } from 'react-router-dom';
 import Button from '../../components/Button/Button';
 import Input from '../../components/Input/Input';
+import Title from '../../components/Title/Title';
+import Group from '../../components/Group/Group';
 
 class Login extends Component {
   static contextType = AuthContext;
@@ -35,28 +37,27 @@ class Login extends Component {
     }
 
     return (
-      <div style={{ maxWidth: 320, margin: '100px auto' }}>
-        <h2>Admin Login</h2>
+
+       <Group className="small">
+        <Title text="Admin Login" />
         <form onSubmit={this.handleSubmit}>
           <div>
            <Input
-              label="Tên đăng nhập"
               name="username"
               value={this.state.username}
               onChange={this.handleChange}
-              placeholder="Nhập tên đăng nhập"
+              placeholder="Nhập tên đăng nhập ..."
               error={this.state.error ? "Tên đăng nhập không hợp lệ" : ''}
                required={true}  
             />
           </div>
           <div style={{ marginTop: 10 }}>
             <Input
-              label="Mật khẩu"
               type="password"
               name="password"
               value={this.state.password}
               onChange={this.handleChange}
-              placeholder="Nhập mật khẩu"
+              placeholder="Nhập mật khẩu ..."
               error={this.state.error ? "Mật khẩu không hợp lệ" : ''}
                required={true}  
             />
@@ -78,7 +79,7 @@ class Login extends Component {
 
 
         </form>
-      </div>
+      </Group>
     );
   }
 }
