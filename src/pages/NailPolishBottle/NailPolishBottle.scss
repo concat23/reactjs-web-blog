@@ -1,0 +1,18 @@
+// src/pages/admin/NailPolishBottle.scss
+
+#content-wrapper {
+  margin-top: 1.5rem; // tương đương mt-6
+  padding-left: 1rem;  // px-4 tương đương padding-left + padding-right 1rem, bạn có thể tùy chỉnh
+  padding-right: 1rem;
+
+  #page-title {
+    font-size: 1.5rem;  // text-2xl (khoảng 24px)
+    font-weight: 700;   // font-bold
+    color: #2d3748;     // text-gray-800
+  }
+
+  #page-description {
+    color: #718096;     // text-gray-600
+    margin-top: 0.5rem; // mt-2
+  }
+}

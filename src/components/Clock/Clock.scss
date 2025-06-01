@@ -1,0 +1,36 @@
+// Clock.scss
+
+.clock-container {
+  display: inline-block;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  color: #e0f7fa;
+  padding: 14px 22px;   // nhỏ hơn
+  border-radius: 10px;
+  box-shadow: 0 6px 12px rgba(32, 58, 67, 0.5);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  user-select: none;
+  text-align: center;
+  min-width: 165px;     // 75% của 220px
+  transition: box-shadow 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 9px 18px rgba(32, 58, 67, 0.8);
+  }
+}
+
+.clock-time {
+  font-size: 2.4rem;    // 75% của 3.2rem
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-shadow: 0 0 6px rgba(0, 188, 212, 0.8);
+  margin-bottom: 4px;
+}
+
+.clock-date {
+  font-size: 0.95rem;   // 75% của 1.25rem
+  font-weight: 500;
+  text-transform: capitalize;
+  color: #b2ebf2;
+  letter-spacing: 0.75px;
+  text-shadow: 0 0 3px rgba(0, 188, 212, 0.6);
+}

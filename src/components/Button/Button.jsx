@@ -4,7 +4,7 @@ import './Button.scss';
 const Button = ({
   label,
   type = 'button',
-  variant = 'primary',  // mặc định màu primary
+  variant = 'primary',  
   fontSize,
   fontWeight,
   borderRadius,

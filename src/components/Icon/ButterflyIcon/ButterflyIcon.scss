@@ -1,0 +1,17 @@
+.link-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #444;
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: #ff69b4; // hồng nhẹ nhàng, nổi bật
+    cursor: pointer;
+
+    svg {
+      transform: scale(1.2);
+      transition: transform 0.3s ease;
+    }
+  }
+}

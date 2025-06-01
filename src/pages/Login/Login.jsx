@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React, { useState, useContext} from 'react';
+import { useI18n } from '../../contexts/I18nContext';
 import { AuthContext } from '../../contexts/AuthContext';
 import { Navigate } from 'react-router-dom';
 import Button from '../../components/Button/Button';
@@ -8,126 +9,108 @@ import Group from '../../components/Group/Group';
 import Container from '../../components/Container/Container';
 import ProgressBar from '../../components/ProcessBar/ProcessBar';
 
-class Login extends Component {
-  static contextType = AuthContext;
+const Login = () => {
+  const { t } = useI18n();
+  const authContext = useContext(AuthContext);
 
-  state = {
-    username: '',
-    password: '',
-    error: '',
-    redirectToDashboard: false,
-    isLoading: false,
-    progressData: {
-      progress: 0,
-      status: 'loading',
-      step: 'Đang xử lý đăng nhập...',
-    },
-  };
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [redirectToDashboard, setRedirectToDashboard] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [progressData, setProgressData] = useState({
+    progress: 0,
+    status: 'loading',
+    step: t('login.loadingStep') || 'Đang xử lý đăng nhập...',
+  });
 
-  handleChange = (e) => {
-    this.setState({ [e.target.name]: e.target.value, error: '' });
-  };
+  React.useEffect(() => {
+    let timer;
+    if (isLoading) {
+      if (progressData.progress >= 100) {
+        setRedirectToDashboard(true);
+      } else {
+        timer = setTimeout(() => {
+          setProgressData((prev) => ({
+            ...prev,
+            progress: Math.min(prev.progress + 20, 100),
+            step: `Đang tải ${Math.min(prev.progress + 20, 100)}%`,
+          }));
+        }, 300);
+      }
+    }
+    return () => clearTimeout(timer);
+  }, [isLoading, progressData.progress]);
 
-  handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const { username, password } = this.state;
+    setError('');
     try {
-      await this.context.login(username, password);
-      this.setState({ isLoading: true }, this.startProgress);
-    } catch (error) {
-      this.setState({ error: error.message });
+      await authContext.login(username, password);
+      setIsLoading(true);
+    } catch (err) {
+      setError(err.message);
     }
   };
 
-  startProgress = () => {
-    const { progress } = this.state.progressData;
-
-    if (progress >= 100) {
-      this.setState({ redirectToDashboard: true });
-      return;
-    }
-
-    this.timer = setTimeout(() => {
-      const nextProgress = Math.min(progress + 20, 100);
-      this.setState(
-        (prevState) => ({
-          progressData: {
-            ...prevState.progressData,
-            progress: nextProgress,
-            step: `Đang tải ${nextProgress}%`,
-          },
-        }),
-        this.startProgress
-      );
-    }, 300);
-  };
-
-  componentWillUnmount() {
-    clearTimeout(this.timer);
+  if (redirectToDashboard) {
+    return <Navigate to="/dashboard" replace />;
   }
 
-  render() {
-    const { username, password, error, redirectToDashboard, isLoading, progressData } = this.state;
-
-    if (redirectToDashboard) {
-      return <Navigate to="/dashboard" replace />;
-    }
-
-    if (isLoading) {
-      return (
-        <div style={{ padding: 50 }}>
-          <ProgressBar
-            progress={progressData.progress}
-            status={progressData.status}
-            step={progressData.step}
-          />
-        </div>
-      );
-    }
-
+  if (isLoading) {
     return (
-      <Container widthVariant="width-80" heightVariant="height-auto">
-        <Group className="small">
-          <Title text="Admin Login" />
-          <form onSubmit={this.handleSubmit}>
-            <div>
-              <Input
-                name="username"
-                value={username}
-                onChange={this.handleChange}
-                placeholder="Nhập tên đăng nhập ..."
-                error={error ? 'Tên đăng nhập không hợp lệ' : ''}
-                required={true}
-              />
-            </div>
-            <div style={{ marginTop: 10 }}>
-              <Input
-                type="password"
-                name="password"
-                value={password}
-                onChange={this.handleChange}
-                placeholder="Nhập mật khẩu ..."
-                error={error ? 'Mật khẩu không hợp lệ' : ''}
-                required={true}
-              />
-            </div>
-            {error && <p style={{ color: 'red', marginTop: 10 }}>{error}</p>}
-            <Button
-              type="submit"
-              label="Đăng nhập"
-              variant="primary"
-              fontSize="16px"
-              fontWeight="bold"
-              borderRadius="6px"
-              padding="10px 20px"
-              margin="15px 0 0 0"
-              width="100%"
-            />
-          </form>
-        </Group>
-      </Container>
+      <div style={{ padding: 50 }}>
+        <ProgressBar
+          progress={progressData.progress}
+          status={progressData.status}
+          step={progressData.step}
+        />
+      </div>
     );
   }
-}
+
+  return (
+    <Container widthVariant="width-80" heightVariant="height-auto">
+      <Group className="medium">
+        <Title text={t('login.title')} />
+        <form onSubmit={handleSubmit}>
+          <div>
+            <Input
+              name="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder={t('login.usernamePlaceholder')}
+              error={error ? t('login.usernameError') : ''}
+              required
+            />
+          </div>
+          <div style={{ marginTop: 10 }}>
+            <Input
+              type="password"
+              name="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder={t('login.passwordPlaceholder')}
+              error={error ? t('login.passwordError') : ''}
+              required
+            />
+          </div>
+          {error && <p style={{ color: 'red', marginTop: 10 }}>{error}</p>}
+          <Button
+            type="submit"
+            label={t('login.loginButton')}
+            variant="primary"
+            fontSize="16px"
+            fontWeight="bold"
+            borderRadius="6px"
+            padding="10px 20px"
+            margin="15px 0 0 0"
+            width="100%"
+          />
+        </form>
+      </Group>
+    </Container>
+  );
+};
 
 export default Login;

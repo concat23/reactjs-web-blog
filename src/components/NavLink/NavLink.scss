@@ -1,0 +1,75 @@
+.navbar-links {
+  display: flex;
+  align-items: center; // đảm bảo các mục nằm giữa theo chiều dọc
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  .labelNav {
+    margin-left: 8px;
+  }
+
+  li {
+    margin: 0 12px;
+    display: flex;
+    align-items: center;
+
+    a {
+      color: #ccc;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease, border-bottom 0.3s ease;
+
+      &:hover {
+        color: #ffffff;
+      }
+
+      &.active {
+        color: #00bcd4;
+        border-bottom: 2px solid #00bcd4;
+        padding-bottom: 2px;
+      }
+    }
+  }
+
+  .btn-logout {
+    background-color: #ff4d4f;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 4px;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s ease;
+
+    &:hover {
+      background-color: #d9363e;
+    }
+  }
+
+  .user-avatar-container {
+    display: flex;
+    align-items: center;
+    margin-right: auto; // đẩy avatar sang trái, các link sang phải nếu dùng flex-row
+    padding: 0 12px;
+
+    .user-avatar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      &__image {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+
+      &__name {
+        font-weight: 600;
+        color: #ffffff;
+        font-size: 14px;
+      }
+    }
+  }
+}

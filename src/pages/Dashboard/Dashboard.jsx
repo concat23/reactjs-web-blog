@@ -1,99 +1,74 @@
-import React, { Component } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { AuthContext } from '../../contexts/AuthContext';
-import ProgressBar from '../../components/ProcessBar/ProcessBar';
-import LogoutButton from '../Logout/Logout';
+import Container from '../../components/Container/Container';
 
-class Dashboard extends Component {
-  static contextType = AuthContext;
+import DashboardHeader from './DashboardHeader/DashboardHeader';
+import DashboardContent from './DashboardContent/DashboardContent';
+import { useI18n } from '../../contexts/I18nContext';
 
-  state = {
-    progressData: {
-      progress: 0,
-      status: 'loading',
-      step: 'Bắt đầu xử lý...',
-    },
-  };
+const Dashboard = () => {
+  const auth = useContext(AuthContext);
+  const { t } = useI18n();
 
-  componentDidMount() {
+  const [progressData, setProgressData] = useState({
+    progress: 0,
+    status: 'loading',
+    step: t('dashboard.progressStepStart'),
+  });
+
+  const timerRef = useRef(null);
+
+  useEffect(() => {
+    const fakeProgress = () => {
+      timerRef.current = setTimeout(() => {
+        setProgressData((prev) => {
+          const nextProgress = Math.min(prev.progress + 20, 100);
+
+          if (nextProgress >= 100) {
+            sessionStorage.setItem('progressHasRun', 'true');
+            return {
+              progress: 100,
+              status: 'success',
+              step: t('dashboard.progressStepComplete'),
+            };
+          }
+
+          return {
+            ...prev,
+            progress: nextProgress,
+            step: `${t('dashboard.progressStepStart')} ${nextProgress}%`,
+          };
+        });
+
+        fakeProgress(); // recurse
+      }, 200);
+    };
+
     const hasRun = sessionStorage.getItem('progressHasRun');
     if (!hasRun) {
-      this.fakeProgress();
+      fakeProgress();
     } else {
-      this.setState({
-        progressData: {
-          progress: 100,
-          status: 'success',
-          step: 'Hoàn thành',
-        },
-      });
-    }
-  }
-
-  componentWillUnmount() {
-    clearTimeout(this.timer); // tránh memory leak
-  }
-
-  fakeProgress = () => {
-  const { progress } = this.state.progressData;
-
-  if (progress >= 100) {
-    this.setState({
-      progressData: {
+      setProgressData({
         progress: 100,
         status: 'success',
-        step: 'Hoàn thành',
-      },
-    });
-    sessionStorage.setItem('progressHasRun', 'true');
-    return;
-  }
+        step: t('dashboard.progressStepComplete'),
+      });
+    }
 
-  this.timer = setTimeout(() => {
-    const nextProgress = Math.min(progress + 20, 100); // giới hạn max 100%
-    this.setState(
-      (prevState) => ({
-        progressData: {
-          ...prevState.progressData,
-          progress: nextProgress,
-          step: `Tiến trình: ${nextProgress}%`,
-        },
-      }),
-      this.fakeProgress
-    );
-  }, 200); // giảm delay để load nhanh hơn
-};
+    return () => clearTimeout(timerRef.current);
+  }, [t]);
 
-
-  handleLogout = () => {
+  const handleLogout = () => {
     sessionStorage.removeItem('progressHasRun');
-    this.context.logout();
+    auth.logout();
   };
 
-  render() {
-  const { progress, status, step } = this.state.progressData;
-
   return (
-    <div style={{ padding: 20 }}>
-      {/* Chỉ hiển thị ProgressBar khi progress < 100 */}
-      {progress < 100 && (
-        <ProgressBar 
-          progress={progress}
-          status={status}
-          step={step === 'Hoàn thành' ? '' : step} // ẩn text 'Hoàn thành'
-        />
-      )}
-
-      {/* Hiển thị nội dung Dashboard và nút Logout khi progress = 100 */}
-      {progress === 100 && (
-        <>
-          <h1>Dashboard Admin</h1>
-          <LogoutButton onClick={this.handleLogout} />
-        </>
-      )}
-    </div>
+    <Container widthVariant="width-80" heightVariant="height-auto" className="dashboard-container">
+      <DashboardHeader onLogout={handleLogout} />
+      <DashboardContent progressData={progressData} />
+    </Container>
   );
-}
-
-}
+};
 
 export default Dashboard;

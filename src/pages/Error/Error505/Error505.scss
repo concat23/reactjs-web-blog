@@ -1,0 +1,101 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap');
+
+.error505-container {
+  font-family: 'Outfit', sans-serif;
+  position: relative;
+  min-height: 100vh;
+  background: linear-gradient(to bottom, #f0f4f8, #d9e6f2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  overflow: hidden;
+
+  .particles-bg {
+    position: absolute !important;
+    top: 0; left: 0;
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 0;
+    filter: blur(2px) brightness(1.1);
+  }
+
+  .error505-content {
+    position: relative;
+    z-index: 1;
+    backdrop-filter: blur(12px) saturate(180%);
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
+    background-color: rgba(240, 244, 248, 0.85);
+    border: 1px solid rgba(100, 149, 237, 0.3);
+    border-radius: 20px;
+    padding: 3rem 2rem;
+    max-width: 500px;
+    width: 100%;
+    box-shadow: 0 12px 40px rgba(52, 152, 219, 0.2);
+    text-align: center;
+
+    .error505-icon {
+      margin-bottom: 1.5rem;
+      svg {
+        display: inline-block;
+      }
+    }
+
+    h1 {
+      position: relative;
+      font-size: 6rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, #2980b9, #3498db);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: bounce 2s infinite;
+      text-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+    }
+
+    .error505-title {
+      font-size: 1.9rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: #34495e;
+      letter-spacing: 0.5px;
+    }
+
+    .error505-description {
+      font-size: 1.125rem;
+      color: #555;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+      font-weight: 400;
+    }
+
+    .error505-button {
+      display: inline-block;
+      padding: 0.85rem 2.2rem;
+      font-size: 1rem;
+      font-weight: 600;
+      color: white;
+      background: linear-gradient(to right, #2980b9, #3498db);
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 6px 20px rgba(52, 152, 219, 0.3);
+      transition: all 0.3s ease-in-out;
+
+      &:hover {
+        transform: scale(1.06);
+        box-shadow: 0 8px 30px rgba(52, 152, 219, 0.5);
+      }
+
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}

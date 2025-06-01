@@ -5,11 +5,16 @@ import {
   Route,
   Navigate,
 } from 'react-router-dom';
+
 import Login from '../pages/Login/Login';
 import Dashboard from '../pages/Dashboard/Dashboard';
+import NailPolishBottle from '../pages/NailPolishBottle/NailPolishBottle';
+import NotFound from '../pages/Error/NotFound/NotFound'; // ✅ Import trang NotFound
+
 import PrivateRoute from '../components/PrivateRoute';
 import PublicRoute from '../components/PublicRoute';
 import { AuthContext } from '../contexts/AuthContext';
+import Error505 from '../pages/Error/Error505/Error505';
 
 class AdminRootRedirect extends Component {
   static contextType = AuthContext;
@@ -42,7 +47,7 @@ class AppRoutes extends Component {
             }
           />
 
-          {/* Trang chính sau khi đăng nhập */}
+          {/* Trang chính sau đăng nhập */}
           <Route
             path="/dashboard"
             element={
@@ -52,15 +57,19 @@ class AppRoutes extends Component {
             }
           />
 
-          {/* Các đường dẫn khác như /admin/something đều load Dashboard nếu login */}
           <Route
-            path="/*"
+            path="/nail-polish-bottle"
             element={
               <PrivateRoute>
-                <Dashboard />
+                <NailPolishBottle />
               </PrivateRoute>
             }
           />
+
+          {/* ✅ Bắt mọi route không khớp */}
+           <Route path="/error/505" element={<Error505 />} />
+          <Route path="*" element={<NotFound />} />
+         
         </Routes>
       </BrowserRouter>
     );

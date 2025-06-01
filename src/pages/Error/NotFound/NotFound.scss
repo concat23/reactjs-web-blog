@@ -1,0 +1,200 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap');
+
+// Variables
+$primary-gradient: linear-gradient(to right, #ff416c, #ff4b2b);
+$bg-color: linear-gradient(to bottom, #fdfbfb, #ebedee);
+$font-family-main: 'Outfit', sans-serif;
+$text-dark: #222;
+$text-muted: #555;
+$shadow-color: rgba(0, 0, 0, 0.1);
+$shadow-strong: rgba(255, 75, 50, 0.3);
+$blur-bg: rgba(255, 255, 255, 0.75);
+
+// Container
+.notfound-container {
+  font-family: $font-family-main;
+  position: relative;
+  min-height: 100vh;
+  background: $bg-color;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  overflow: hidden;
+
+  .particles-bg {
+    position: absolute !important;
+    top: 0;
+    left: 0;
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 0;
+    filter: blur(2px) brightness(1.1);
+    animation: particleFloat 8s ease-in-out infinite;
+  }
+
+  .notfound-content {
+    position: relative;
+    z-index: 1;
+    backdrop-filter: blur(12px) saturate(180%);
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
+    background-color: $blur-bg;
+    border: 1px solid rgba(209, 213, 219, 0.3);
+    border-radius: 20px;
+    padding: 3rem 2rem;
+    max-width: 560px;
+    width: 100%;
+    box-shadow: 0 12px 40px $shadow-color;
+    text-align: center;
+    animation: fadeInUp 1s ease-out;
+
+    .notfound-icon {
+      margin-bottom: 1.5rem;
+
+      svg {
+        display: inline-block;
+        animation: pulseIcon 3s ease-in-out infinite;
+      }
+    }
+
+    h1 {
+      position: relative;
+      font-size: 6rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      background: $primary-gradient;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: bounce 2s infinite, shake 3s ease-in-out infinite;
+      text-shadow: 0 0 5px rgba(255, 77, 90, 0.3);
+
+      &::before {
+        content: '';
+        position: absolute;
+        left: -80px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 72px;
+        height: 72px;
+        background-image: url('../../../../public/images/bee.png');
+        background-size: cover;
+        background-repeat: no-repeat;
+        opacity: 0.85;
+        animation: floatBee 4s ease-in-out infinite;
+        pointer-events: none;
+        filter: drop-shadow(0 5px 8px rgba(0, 0, 0, 0.2));
+      }
+
+      &::after {
+        content: '';
+        position: absolute;
+        left: -70px;
+        top: 80%;
+        width: 50px;
+        height: 10px;
+        background: rgba(0, 0, 0, 0.12);
+        border-radius: 50%;
+        filter: blur(3px);
+        animation: shadowPulse 3s ease-in-out infinite;
+      }
+    }
+
+    .notfound-title {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: $text-dark;
+      letter-spacing: 0.5px;
+    }
+
+    .notfound-description {
+      font-size: 1.125rem;
+      color: $text-muted;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+      font-weight: 400;
+    }
+
+    .notfound-button {
+      display: inline-block;
+      padding: 0.85rem 2.2rem;
+      font-size: 1rem;
+      font-weight: 600;
+      color: white;
+      background: $primary-gradient;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 6px 20px $shadow-strong;
+      transition: all 0.3s ease-in-out;
+
+      &:hover {
+        transform: scale(1.06);
+        box-shadow: 0 8px 30px rgba(255, 75, 50, 0.5);
+        animation: buttonPulse 0.6s ease-in-out;
+      }
+
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+}
+
+// Animations
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+@keyframes floatBee {
+  0% { transform: translateY(-50%) translateX(0) rotate(0); }
+  50% { transform: translateY(-60%) translateX(8px) rotate(3deg); }
+  100% { transform: translateY(-50%) translateX(0) rotate(0); }
+}
+
+@keyframes shadowPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.2;
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 0.4;
+  }
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-3px); }
+  50% { transform: translateX(3px); }
+  75% { transform: translateX(-2px); }
+}
+
+@keyframes buttonPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes particleFloat {
+  0% { transform: translateY(0) translateX(0); }
+  50% { transform: translateY(-10px) translateX(5px); }
+  100% { transform: translateY(0) translateX(0); }
+}
+
+@keyframes pulseIcon {
+  0%, 100% { transform: scale(1); opacity: 0.95; }
+  50% { transform: scale(1.1); opacity: 1; }
+}
