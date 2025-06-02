@@ -1,8 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import './Clock.scss';
+import { useI18n } from '../../contexts/I18nContext';
 
-const Clock = () => {
+const Clock = ({ language: propLanguage }) => {
+  const { t, language: contextLanguage } = useI18n();
+  const language = propLanguage || contextLanguage; 
+
   const [time, setTime] = useState(new Date());
+
+  useEffect(() => {
+    document.title = t('item.clockTitle');
+  }, [language, t]);
 
   useEffect(() => {
     const interval = setInterval(() => setTime(new Date()), 1000);
@@ -10,22 +18,26 @@ const Clock = () => {
   }, []);
 
   const formatTime = (date) => {
-    return date.toLocaleTimeString('vi-VN', {
+    const locale = language === 'vi' ? 'vi-VN' : 'en-US';
+    return date.toLocaleTimeString(locale, {
       hour: '2-digit',
       minute: '2-digit',
       second: '2-digit',
-      hour12: false,
-      timeZone: 'Asia/Ho_Chi_Minh'
+      hour12: language === 'vi' ? false : true,
+      timeZone: 'Asia/Ho_Chi_Minh',
+      localeMatcher: 'lookup',
     });
   };
 
   const formatDate = (date) => {
-    return date.toLocaleDateString('vi-VN', {
+    const locale = language === 'vi' ? 'vi-VN' : 'en-US';
+    return date.toLocaleDateString(locale, {
       weekday: 'long',
       year: 'numeric',
       month: 'long',
       day: 'numeric',
-      timeZone: 'Asia/Ho_Chi_Minh'
+      timeZone: 'Asia/Ho_Chi_Minh',
+      localeMatcher: 'lookup',
     });
   };
 

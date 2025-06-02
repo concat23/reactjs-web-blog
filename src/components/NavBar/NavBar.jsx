@@ -6,13 +6,14 @@ import NavLinks from './../NavLink/NavLink';
 import './NavBar.scss';
 import Logo from '../Logo/Logo';
 
-import { faHome,faPaintBrush, faUser, faCog } from '@fortawesome/free-solid-svg-icons';
+import { faHome,faPaintBrush, faTags, faCog } from '@fortawesome/free-solid-svg-icons';
 
 const NavBar = ({ onLogout }) => {
   const { t } = useI18n();
 
   const links = [
     { to: '/dashboard', label: t('dashboard.adminTitle'), icon: faHome },
+    { to: '/category', label: t('item.categories'), icon: faTags },
     { to: '/nail-polish-bottle', label: t('item.nailPolishBottle'), icon: faPaintBrush },
     { to: '/settings', label: t('item.settings'), icon: faCog },
   ];

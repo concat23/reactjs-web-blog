@@ -11,7 +11,7 @@ const DashboardHeader = () => {
     <header className="dashboard-header">
       <div className="header-top">
         <Title text={t('dashboard.adminTitle')} />
-        <Clock />
+        <Clock language="en" />
       </div>
       <NavBar />
 

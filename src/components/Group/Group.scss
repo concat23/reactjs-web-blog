@@ -22,6 +22,10 @@
     max-width: 640px;
   }
 
+  &.height-small {
+    max-height: 300px;
+  }
+
   @media (max-width: 500px) {
     padding: 1.5rem;
     margin: 60px auto;

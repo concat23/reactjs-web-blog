@@ -15,6 +15,7 @@ import PrivateRoute from '../components/PrivateRoute';
 import PublicRoute from '../components/PublicRoute';
 import { AuthContext } from '../contexts/AuthContext';
 import Error505 from '../pages/Error/Error505/Error505';
+import Category from '../pages/Category/Category';
 
 class AdminRootRedirect extends Component {
   static contextType = AuthContext;
@@ -62,6 +63,15 @@ class AppRoutes extends Component {
             element={
               <PrivateRoute>
                 <NailPolishBottle />
+              </PrivateRoute>
+            }
+          />
+
+           <Route
+            path="/category"
+            element={
+              <PrivateRoute>
+                <Category />
               </PrivateRoute>
             }
           />

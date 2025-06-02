@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 
-import Layout from './layout/Layout';
+import Layout from './components/Layout/Layout';
 import Login from './pages/Login/Login';
 import Dashboard from './pages/Dashboard/Dashboard';
 import AuthService from './services/auth.service';
@@ -63,7 +63,6 @@ function App() {
       <Router>
         <LanguageSwitcher />
         <AnimatedRoutes isLoggedIn={isLoggedIn} onLogin={handleLogin} onLogout={handleLogout} />
-
       </Router>
   );
 }
