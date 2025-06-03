@@ -4,8 +4,8 @@ import './Create.scss'; // Đảm bảo SCSS đã được import
 
 const Create = ({ title, fields, onSubmit }) => {
 
-    const { t } = useI18n();
-    
+  const { t } = useI18n();
+
   const initialState = fields.reduce((acc, field) => {
     if (field.type === 'checkbox') {
       acc[field.name] = field.defaultValue ?? false;
@@ -30,7 +30,7 @@ const Create = ({ title, fields, onSubmit }) => {
     }
 
     setFormData((prev) => ({ ...prev, [name]: newValue }));
-    if (message) setMessage('');  
+    if (message) setMessage('');
   };
 
   const handleSubmit = async (e) => {
@@ -46,17 +46,18 @@ const Create = ({ title, fields, onSubmit }) => {
     });
 
     if (hasEmpty) {
-      setMessage('Please fill in all required fields.');
+      setMessage(t('dashboard.validationFillRequired')); // "Vui lòng điền tất cả các trường bắt buộc."
       return;
     }
 
     try {
       setLoading(true);
       await onSubmit(formData);
-      setMessage(`${title} created successfully!`);
+      setMessage(t('dashboard.createdSuccessfully', { title })); // "Tạo {title} thành công!"
       setFormData(initialState);
     } catch (err) {
-      setMessage(`Error creating ${title.toLowerCase()}: ${err.message}`);
+      setMessage(t('dashboard.errorCreating', { title: title.toLowerCase(), message: err.message }));
+      // "Lỗi khi tạo {title}: {message}"
     } finally {
       setLoading(false);
     }
@@ -86,7 +87,7 @@ const Create = ({ title, fields, onSubmit }) => {
             multiple={multiple}
             required={field.required !== false}
           >
-            <option value="">-- Select --</option>
+            <option value="">{t('dashboard.selectPlaceholder') /* "-- Chọn --" */}</option>
             {options?.map((opt) => (
               <option key={opt.value} value={opt.value}>
                 {opt.label}
@@ -142,9 +143,8 @@ const Create = ({ title, fields, onSubmit }) => {
           </div>
         ))}
         <button type="submit" className="form-submit" disabled={loading}>
-            {loading ? 'Creating...' : t('dashboard.createButton')}
-            </button>
-
+          {loading ? t('dashboard.creating') /* "Đang tạo..." */ : t('dashboard.createButton') /* "Tạo" */}
+        </button>
       </form>
     </div>
   );

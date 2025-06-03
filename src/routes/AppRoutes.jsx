@@ -16,6 +16,7 @@ import PublicRoute from '../components/PublicRoute';
 import { AuthContext } from '../contexts/AuthContext';
 import Error505 from '../pages/Error/Error505/Error505';
 import Category from '../pages/Category/Category';
+import Brand from '../pages/Brand/Brand';
 
 class AdminRootRedirect extends Component {
   static contextType = AuthContext;
@@ -72,6 +73,15 @@ class AppRoutes extends Component {
             element={
               <PrivateRoute>
                 <Category />
+              </PrivateRoute>
+            }
+          />
+
+           <Route
+            path="/brand"
+            element={
+              <PrivateRoute>
+                <Brand />
               </PrivateRoute>
             }
           />

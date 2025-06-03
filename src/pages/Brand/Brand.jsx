@@ -4,41 +4,39 @@ import Container from '../../components/Container/Container';
 import { AuthContext } from '../../contexts/AuthContext';
 import { useI18n } from '../../contexts/I18nContext';
 import DashboardHeader from '../Dashboard/DashboardHeader/DashboardHeader';
-import './Category.scss';
+import './Brand.scss';
 
 import Create from '../../components/CRUD/Create/Create';
 import List from '../../components/CRUD/List/List';
 import Popup from '../../components/Popup/Popup';
 import Group from '../../components/Group/Group';
 
-import CategoryService from '../../api/CategoryService';
+import BrandService from '../../api/BrandService';
 
-const Category = () => {
+const Brand = () => {
   const auth = useContext(AuthContext);
   const { t } = useI18n();
-  const service = new CategoryService(); 
+  const service = new BrandService();
 
-  const [categories, setCategories] = useState([]);
+  const [brands, setBrands] = useState([]);
   const [loading, setLoading] = useState(false);
   const [popupOpen, setPopupOpen] = useState(false);
   const [popupMessage, setPopupMessage] = useState('');
-
   const [refreshFlag, setRefreshFlag] = useState(0);
 
-
   useEffect(() => {
-     document.title = t('item.categoryTitle');
-    fetchCategories();
-  }, []);
+     document.title = t('item.brandTitle');
+    fetchBrands();
+  }, [refreshFlag]);
 
-  const fetchCategories = async () => {
+  const fetchBrands = async () => {
     setLoading(true);
     try {
       const response = await service.getAll();
-      setCategories(response || []);
+      setBrands(response || []);
     } catch (error) {
-      console.error('Error fetching categories:', error);
-      setPopupMessage(t('category.errorFetch'));
+      console.error('Error fetching brands:', error);
+      setPopupMessage(t('brand.errorFetch'));
       setPopupOpen(true);
     } finally {
       setLoading(false);
@@ -46,9 +44,13 @@ const Category = () => {
   };
 
   const defaultFields = [
-    { name: 'name', label: t('category.name'), type: 'text', required: true },
-    { name: 'description', label: t('category.description'), type: 'textarea' }
-  ];
+  { name: 'id', label: t('brand.id'), type: 'text', readOnly: true },
+  { name: 'name', label: t('brand.name'), type: 'text', required: true },
+  { name: 'country', label: t('brand.country'), type: 'text' },
+  { name: 'website', label: t('brand.website'), type: 'text' },
+  { name: 'logo_url', label: t('brand.logo'), type: 'text' },
+];
+
 
   const handleLogout = () => {
     sessionStorage.removeItem('progressHasRun');
@@ -57,14 +59,13 @@ const Category = () => {
 
   const handleSubmit = async (data) => {
     try {
-      await service.create(data); 
-      setPopupMessage(t('category.successMessage'));
+      await service.create(data);
+      setPopupMessage(t('brand.successMessage'));
       setPopupOpen(true);
-      setRefreshFlag((prev) => prev + 1);
-      fetchCategories(); // Refresh list
+      setRefreshFlag(prev => prev + 1);
     } catch (error) {
-      console.error('Error creating category:', error);
-      setPopupMessage(t('category.errorMessage'));
+      console.error('Error creating brand:', error);
+      setPopupMessage(t('brand.errorMessage'));
       setPopupOpen(true);
     }
   };
@@ -74,15 +75,15 @@ const Category = () => {
       <DashboardHeader onLogout={handleLogout} />
       <div id="content-wrapper" className="mt-6 px-4">
         <h1 id="page-title" className="text-2xl font-bold text-gray-800">
-          {t('dashboard.categoryTitle')}
+          {t('dashboard.brandTitle')}
         </h1>
         <p id="page-description" className="text-gray-600 mt-2">
-          {t('dashboard.categoryDescription')}
+          {t('dashboard.brandDescription')}
         </p>
 
         <Group>
           <Create
-            title={t('category.createTitle')}
+            title={t('brand.createTitle')}
             fields={defaultFields}
             onSubmit={handleSubmit}
           />
@@ -96,7 +97,7 @@ const Category = () => {
 
         <List
           service={service}
-          title={t('category.listTitle')}
+          title={t('brand.listTitle')}
           refreshTrigger={refreshFlag}
           loading={loading}
         />
@@ -105,4 +106,4 @@ const Category = () => {
   );
 };
 
-export default Category;
+export default Brand;

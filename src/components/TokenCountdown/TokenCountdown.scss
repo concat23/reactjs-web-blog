@@ -1,0 +1,25 @@
+.token-countdown {
+  background-color: #ffe6e6;
+  color: #d8000c;
+  font-weight: 700;
+  padding: 10px 15px;
+  border-radius: 5px;
+  font-size: 1.1rem;
+  max-width: 250px;
+  margin: 10px auto;
+  text-align: center;
+  box-shadow: 0 0 8px rgba(216, 0, 12, 0.5);
+
+  &.warning {
+    animation: pulse 1.5s infinite alternate;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    background-color: #ffe6e6;
+  }
+  100% {
+    background-color: #ffcccc;
+  }
+}

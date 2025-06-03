@@ -9,7 +9,7 @@ const Clock = ({ language: propLanguage }) => {
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
-    document.title = t('item.clockTitle');
+    // document.title = t('item.clockTitle');
   }, [language, t]);
 
   useEffect(() => {

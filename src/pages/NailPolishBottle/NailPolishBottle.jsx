@@ -23,58 +23,62 @@ const NailPolishBottle = () => {
   const [popupMessage, setPopupMessage] = useState('');
 
   useEffect(() => {
+
+    document.title = t('item.nailPolishBottleTitle');
+
     const brandService = new BrandService();
     const categoryService = new CategoryService();
 
     brandService.getAll()
-      .then(data => {
-        const options = data.map(b => ({ value: b.id.toString(), label: b.name }));
+      .then(item => {
+        const options = item.data.map(b => ({ value: b.id.toString(), label: b.name }));
         setBrands(options);
       })
       .catch(console.error);
 
     categoryService.getAll()
-      .then(data => {
-        const options = data.map(c => ({ value: c.id.toString(), label: c.name }));
+      .then(item => {
+        const options = item.data.map(c => ({ value: c.id.toString(), label: c.name }));
         setCategories(options);
       })
       .catch(console.error);
 
   }, []);
 
+  // Chuyển ngữ label fields
   const defaultFields = [
-    { name: 'name', label: 'Product Name', type: 'text' },
-    { name: 'code', label: 'Product Code', type: 'text' },
+    { name: 'name', label: t('nailPolish.productName'), type: 'text' },
+    { name: 'code', label: t('nailPolish.productCode'), type: 'text' },
     { 
       name: 'brand_id', 
-      label: 'Brand', 
+      label: t('nailPolish.brand'), 
       type: 'select',
       options: brands,
     },
     { 
       name: 'category_id', 
-      label: 'Category', 
+      label: t('nailPolish.category'), 
       type: 'select',
       options: categories,
     },
-    { name: 'color_code', label: 'Color Code', type: 'text' },
-    { name: 'color_name', label: 'Color Name', type: 'text' },
-    { name: 'hex_color', label: 'Hex Color', type: 'text' },
-    { name: 'finish_type', label: 'Finish Type', type: 'text' },
-    { name: 'volume_ml', label: 'Volume (ml)', type: 'number' },
-    { name: 'dry_time_seconds', label: 'Dry Time (seconds)', type: 'number' },
-    { name: 'durability_days', label: 'Durability (days)', type: 'number' },
-    { name: 'is_vegan', label: 'Is Vegan', type: 'checkbox' },
-    { name: 'is_cruelty_free', label: 'Is Cruelty Free', type: 'checkbox' },
-    { name: 'is_toxic_free', label: 'Is Toxic Free', type: 'checkbox' },
-    { name: 'price_vnd', label: 'Price (VND)', type: 'number' },
-    { name: 'currency', label: 'Currency', type: 'text' },
-    { name: 'manufacture_date', label: 'Manufacture Date', type: 'date' },
-    { name: 'expiry_date', label: 'Expiry Date', type: 'date' },
-    { name: 'barcode', label: 'Barcode', type: 'text' },
-    { name: 'usage_instructions', label: 'Usage Instructions', type: 'textarea' },
-    { name: 'warning_notes', label: 'Warning Notes', type: 'textarea' },
-    { name: 'storage_instructions', label: 'Storage Instructions', type: 'textarea' },
+    { name: 'color_code', label: t('nailPolish.colorCode'), type: 'text' },
+    { name: 'color_name', label: t('nailPolish.colorName'), type: 'text' },
+    { name: 'hex_color', label: t('nailPolish.hexColor'), type: 'text' },
+    { name: 'finish_type', label: t('nailPolish.finishType'), type: 'text' },
+    { name: 'volume_ml', label: t('nailPolish.volumeMl'), type: 'number' },
+    { name: 'dry_time_seconds', label: t('nailPolish.dryTimeSeconds'), type: 'number' },
+    { name: 'durability_days', label: t('nailPolish.durabilityDays'), type: 'number' },
+    { name: 'is_vegan', label: t('nailPolish.isVegan'), type: 'checkbox' },
+    { name: 'is_cruelty_free', label: t('nailPolish.isCrueltyFree'), type: 'checkbox' },
+    { name: 'is_toxic_free', label: t('nailPolish.isToxicFree'), type: 'checkbox' },
+    { name: 'price_vnd', label: t('nailPolish.priceVnd'), type: 'number' },
+    { name: 'currency', label: t('nailPolish.currency'), type: 'text' },
+    { name: 'manufacture_date', label: t('nailPolish.manufactureDate'), type: 'date' },
+    { name: 'expiry_date', label: t('nailPolish.expiryDate'), type: 'date' },
+    { name: 'barcode', label: t('nailPolish.barcode'), type: 'text' },
+    { name: 'usage_instructions', label: t('nailPolish.usageInstructions'), type: 'textarea' },
+    { name: 'warning_notes', label: t('nailPolish.warningNotes'), type: 'textarea' },
+    { name: 'storage_instructions', label: t('nailPolish.storageInstructions'), type: 'textarea' },
   ];
 
   const handleLogout = () => {
@@ -84,7 +88,7 @@ const NailPolishBottle = () => {
 
   const handleSubmit = (data) => {
       console.log('Submit data:', data);
-      setPopupMessage('Nail Polish saved successfully!');
+      setPopupMessage(t('nailPolish.saveSuccessMessage'));
       setPopupOpen(true);
   };
 
@@ -100,12 +104,11 @@ const NailPolishBottle = () => {
         </p>
 
         <Create
-          title="Nail Polish"
+          title={t('nailPolish.formTitle')}
           fields={defaultFields}
           onSubmit={handleSubmit}
         />
 
-        {/* Popup hiển thị khi popupOpen = true */}
         <Popup
           isOpen={popupOpen}
           message={popupMessage}

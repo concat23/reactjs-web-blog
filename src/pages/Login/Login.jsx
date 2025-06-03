@@ -25,6 +25,7 @@ const Login = () => {
   });
 
   React.useEffect(() => {
+     document.title = t('login.title') || 'Đăng nhập';
     let timer;
     if (isLoading) {
       if (progressData.progress >= 100) {

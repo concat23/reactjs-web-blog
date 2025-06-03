@@ -4,29 +4,23 @@ export default class CategoryService {
   constructor() {
     this.apiBaseUrl = 'http://localhost:8555/api';
     this.tokenKey = 'admin_token';
-    }
+    this.token = this.getToken();
+  }
 
-   getToken() {
-  const token = localStorage.getItem(this.tokenKey);
-  console.log('Token from localStorage:', token);
-  return token;
-}
+  getToken() {
+    const token = localStorage.getItem(this.tokenKey);
+    return token ? token.trim().replace(/[\r\n]+/g, '') : null;
+  }
 
+  async getAll() {
+    return apiRequest(`${this.apiBaseUrl}/category`, 'GET', null, this.token);
+  }
 
-    async getAll() {
-        const token = this.getToken();
-        console.log('Fetching all categories with token:', token);
-        return apiRequest(`${this.apiBaseUrl}/category`, 'GET', null, token);
-    }
+  async getById(categoryId) {
+    return apiRequest(`${this.apiBaseUrl}/category/${categoryId}`, 'GET', null, this.token);
+  }
 
-    async getById(categoryId) {
-        const token = this.getToken();
-        return apiRequest(`${this.apiBaseUrl}/category/${categoryId}`, 'GET', null, token);
-    }
-
-    async create(categoryData) {
-        const token = this.getToken();
-        return apiRequest(`${this.apiBaseUrl}/category/create`, 'POST', categoryData, token);
-    }
-
+  async create(categoryData) {
+    return apiRequest(`${this.apiBaseUrl}/category/create`, 'POST', categoryData, this.token);
+  }
 }

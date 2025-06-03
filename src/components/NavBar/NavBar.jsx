@@ -14,6 +14,7 @@ const NavBar = ({ onLogout }) => {
   const links = [
     { to: '/dashboard', label: t('dashboard.adminTitle'), icon: faHome },
     { to: '/category', label: t('item.categories'), icon: faTags },
+    { to: '/brand', label: t('item.brand'), icon: faTags },
     { to: '/nail-polish-bottle', label: t('item.nailPolishBottle'), icon: faPaintBrush },
     { to: '/settings', label: t('item.settings'), icon: faCog },
   ];

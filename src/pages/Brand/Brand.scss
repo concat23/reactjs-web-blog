@@ -1,0 +1,58 @@
+/* Brand.scss */
+
+.dashboard-container {
+  background-color: #f9fafb;
+  min-height: 100vh;
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#content-wrapper {
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+#page-title {
+  color: #1f2937; // dark gray
+  margin-bottom: 0.5rem;
+}
+
+#page-description {
+  color: #4b5563; // medium gray
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+}
+
+.mt-6 {
+  margin-top: 1.5rem;
+}
+
+.px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+/* Style for Create component container */
+.Group {
+  margin-bottom: 2rem;
+}
+
+/* Customize popup styling if needed */
+.popup-message {
+  color: #111827;
+  font-size: 1rem;
+  padding: 1rem 1.5rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 10px;
+  }
+
+  #content-wrapper {
+    padding: 16px;
+  }
+}

@@ -12,6 +12,16 @@ export default class BrandService {
 
   async getAll() {
     const token = this.getToken();
-    return apiRequest(`${this.apiBaseUrl}/brands`, 'GET', null, token);
+    return apiRequest(`${this.apiBaseUrl}/brand`, 'GET', null, token);
+  }
+
+  async getById(brandId) {
+    const token = this.getToken();
+    return apiRequest(`${this.apiBaseUrl}/brand/${brandId}`, 'GET', null, token);
+  }
+
+  async create(brandData) {
+    const token = this.getToken();
+    return apiRequest(`${this.apiBaseUrl}/brand/create`, 'POST', brandData, token);
   }
 }

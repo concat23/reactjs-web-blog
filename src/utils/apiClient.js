@@ -1,8 +1,11 @@
-export async function apiRequest(endpoint, method = 'GET', data = null, token = null) {
+import { handleUnauthorized } from './handleUnauthorized';
+
+export async function apiRequest(endpoint, method = 'GET', data = null, token = null, timeout = 10000) {
   method = method.toUpperCase();
 
   const headers = {
     'Accept': 'application/json',
+    'Connection': 'keep-alive',
   };
 
   if (token) {
@@ -24,28 +27,45 @@ export async function apiRequest(endpoint, method = 'GET', data = null, token = 
     config.body = JSON.stringify(data);
   }
 
-  const response = await fetch(endpoint, config);
-
-  let result = null;
-  const contentType = response.headers.get('content-type');
+  // Tạo controller để timeout request
+  const controller = new AbortController();
+  const id = setTimeout(() => controller.abort(), timeout);
+  config.signal = controller.signal;
 
   try {
+    const response = await fetch(endpoint, config);
+    clearTimeout(id);
+
+    const contentType = response.headers.get('content-type');
+    let result = null;
+
     if (contentType && contentType.includes('application/json')) {
       result = await response.json();
     } else {
       result = await response.text();
     }
-  } catch {
-    result = null;
-  }
 
-  if (!response.ok) {
-    const errorMessage = (result && result.message) || response.statusText || 'API error';
-    const error = new Error(errorMessage);
-    error.status = response.status;
-    error.response = result;
+    if (!response.ok) {
+      // Nếu lỗi 401 Unauthorized, gọi logout tự động
+      if (response.status === 401) {
+        handleUnauthorized();
+        return;  // Ngừng xử lý tiếp
+      }
+
+      const errorMessage = (result && result.message) || response.statusText || 'API error';
+      const error = new Error(errorMessage);
+      error.status = response.status;
+      error.response = result;
+      throw error;
+    }
+
+    return result;
+
+  } catch (error) {
+    clearTimeout(id); // đảm bảo clear timeout dù có lỗi
+    if (error.name === 'AbortError') {
+      throw new Error('Request timed out');
+    }
     throw error;
   }
-
-  return result;
 }
