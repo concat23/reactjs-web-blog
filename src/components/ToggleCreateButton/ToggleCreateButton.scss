@@ -1,0 +1,53 @@
+.toggle-create {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  .create-toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(135deg, #2563eb, #1e40af);
+    color: #fff;
+    font-weight: 600;
+    padding: 0.6rem 1.2rem;
+    border-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: all 0.25s ease;
+
+    .button-icon {
+      font-size: 1.2rem;
+      line-height: 1;
+    }
+
+    &:hover {
+      background: linear-gradient(135deg, #1e40af, #1d4ed8);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+    }
+
+    &:active {
+      transform: translateY(0);
+      box-shadow: none;
+    }
+  }
+
+  .create-form-wrapper {
+    margin-top: 1rem;
+    width: 100%;
+    animation: slideDown 0.4s ease forwards;
+  }
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}

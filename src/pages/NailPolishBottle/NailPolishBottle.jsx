@@ -6,13 +6,16 @@ import { useI18n } from '../../contexts/I18nContext';
 import DashboardHeader from '../Dashboard/DashboardHeader/DashboardHeader';
 import './NailPolishBottle.scss';
 
-import Create from '../../components/CRUD/Create/Create';
 import Popup from '../../components/Popup/Popup';
 
 import BrandService from '../../api/BrandService';
 import CategoryService from '../../api/CategoryService';
 import NailPolishProductService from '../../api/NailPolishProductService';
 import List from '../../components/CRUD/List/List';
+import ToggleCreateButton from '../../components/ToggleCreateButton/ToggleCreateButton';
+import Create from '../../components/CRUD/Create/Create';
+import nailPolishFieldsConfig from '../../configs/nailPolishFieldsConfig';
+import Detail from '../../components/CRUD/Detail/Detail';
 
 const NailPolishBottle = () => {
   const auth = useContext(AuthContext);
@@ -29,6 +32,8 @@ const NailPolishBottle = () => {
 
   // Trigger refresh list khi tạo mới thành công
   const [refreshFlag, setRefreshFlag] = useState(0);
+
+  const [selectedItem, setSelectedItem] = useState(null);
 
   // Khởi tạo service chỉ 1 lần
   const brandService = React.useMemo(() => new BrandService(), []);
@@ -59,42 +64,34 @@ const NailPolishBottle = () => {
       .finally(() => setLoading(false));
   }, [brandService, categoryService, productService, t]);
 
-  // Các trường form, sử dụng dữ liệu options lấy được
-  const defaultFields = [
-    { name: 'name', label: t('nailPolish.productName'), type: 'text' },
-    { name: 'code', label: t('nailPolish.productCode'), type: 'text' },
-    { name: 'brand_id', label: t('nailPolish.brand'), type: 'select', options: brands },
-    { name: 'category_id', label: t('nailPolish.category'), type: 'select', options: categories },
-    { name: 'color_code', label: t('nailPolish.colorCode'), type: 'text' },
-    { name: 'color_name', label: t('nailPolish.colorName'), type: 'text' },
-    { name: 'hex_color', label: t('nailPolish.hexColor'), type: 'text' },
-    {
-      name: 'finish_type',
-      label: t('nailPolish.finishType'),
-      type: 'select',
-      options: [
-        { value: 'shiny', label: 'Shiny' },
-        { value: 'matte', label: 'Matte' },
-        { value: 'glitter', label: 'Glitter' },
-      ],
-    },
-    { name: 'volume_ml', label: t('nailPolish.volumeMl'), type: 'number' },
-    { name: 'dry_time_seconds', label: t('nailPolish.dryTimeSeconds'), type: 'number' },
-    { name: 'durability_days', label: t('nailPolish.durabilityDays'), type: 'number' },
-    { name: 'is_vegan', label: t('nailPolish.isVegan'), type: 'checkbox' },
-    { name: 'is_cruelty_free', label: t('nailPolish.isCrueltyFree'), type: 'checkbox' },
-    { name: 'is_toxic_free', label: t('nailPolish.isToxicFree'), type: 'checkbox' },
-    { name: 'price_vnd', label: t('nailPolish.priceVnd'), type: 'number' },
-    { name: 'currency', label: t('nailPolish.currency'), type: 'text' },
-    { name: 'manufacture_date', label: t('nailPolish.manufactureDate'), type: 'date' },
-    { name: 'expiry_date', label: t('nailPolish.expiryDate'), type: 'date' },
-    { name: 'barcode', label: t('nailPolish.barcode'), type: 'text' },
-    { name: 'usage_instructions', label: t('nailPolish.usageInstructions'), type: 'textarea' },
-    { name: 'warning_notes', label: t('nailPolish.warningNotes'), type: 'textarea' },
-    { name: 'storage_instructions', label: t('nailPolish.storageInstructions'), type: 'textarea' },
-  ];
+  const defaultFields = nailPolishFieldsConfig(t, brands, categories);
+  
+  
+const booleanOptions = [
+  { value: true, label: 'Có' },
+  { value: false, label: 'Không' },
+  { value: 1, label: 'Có' },
+  { value: 0, label: 'Không' },
+];
+
+const optionsMap = {
+  brand_id: brands,
+  category_id: categories,
+  is_vegan: booleanOptions,
+  is_cruelty_free: booleanOptions,
+  is_toxic_free: booleanOptions,
+};
+
+const fields = defaultFields.map(field => 
+  field.name in optionsMap 
+    ? { ...field, options: optionsMap[field.name] }
+    : field
+);
+
 
   // Đăng xuất
+
+
   const handleLogout = useCallback(() => {
     sessionStorage.removeItem('progressHasRun');
     auth.logout();
@@ -128,11 +125,20 @@ const NailPolishBottle = () => {
         <h1 id="page-title" className="text-2xl font-bold text-gray-800">{t('dashboard.nailPolishTitle')}</h1>
         <p id="page-description" className="text-gray-600 mt-2">{t('dashboard.nailPolishDescription')}</p>
 
-        <Create title={t('nailPolish.formTitle')} fields={defaultFields} onSubmit={handleSubmit} />
+       <ToggleCreateButton
+          title={t('brand.createTitle')}
+          fields={defaultFields}
+          onSubmit={handleSubmit}
+          buttonLabel={t('button.create')}
+          Create={Create}
+          disableToggleOff={true}
+        />
 
+        <Detail item={selectedItem} onClose={() => setSelectedItem(null)} fields={fields} service={productService} />
+        
         <Popup isOpen={popupOpen} message={popupMessage} onClose={() => setPopupOpen(false)} />
 
-        <List service={productService} title={t('nailPolish.listTitle')} refreshTrigger={refreshFlag} loading={loading} />
+        <List service={productService} title={t('nailPolish.listTitle')} refreshTrigger={refreshFlag} loading={loading}  onView={(item) => setSelectedItem(item)} />
       </div>
     </Container>
   );

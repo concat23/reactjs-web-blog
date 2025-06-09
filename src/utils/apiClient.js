@@ -3,79 +3,60 @@ import { handleUnauthorized } from './handleUnauthorized';
 export async function apiRequest(endpoint, method = 'GET', data = null, token = null, timeout = 10000) {
   method = method.toUpperCase();
 
-  // Log request info
-  console.log(`[API REQUEST] ${method} ${endpoint}`, data);
-
+  // Chuẩn bị headers
   const headers = {
     'Accept': 'application/json',
     'Connection': 'keep-alive',
+    ...(['POST', 'PUT', 'PATCH'].includes(method) ? { 'Content-Type': 'application/json' } : {}),
   };
 
   if (token) {
-    const cleanToken = token.trim().replace(/[\r\n]+/g, '');
-    headers['Authorization'] = `Bearer ${cleanToken}`;
+    headers['Authorization'] = `Bearer ${token.trim().replace(/[\r\n]+/g, '')}`;
   }
 
-  const methodsWithBody = ['POST', 'PUT', 'PATCH'];
-  if (methodsWithBody.includes(method)) {
-    headers['Content-Type'] = 'application/json';
-  }
+  // Tạo controller để abort nếu timeout
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeout);
 
   const config = {
     method,
     headers,
+    signal: controller.signal,
+    ...(data && ['POST', 'PUT', 'PATCH'].includes(method) ? { body: JSON.stringify(data) } : {}),
   };
-
-  if (data && methodsWithBody.includes(method)) {
-    config.body = JSON.stringify(data);
-  }
-
-  const controller = new AbortController();
-  const id = setTimeout(() => controller.abort(), timeout);
-  config.signal = controller.signal;
 
   try {
     const response = await fetch(endpoint, config);
-    clearTimeout(id);
+    clearTimeout(timeoutId);
 
-    const contentType = response.headers.get('content-type');
-    let result = null;
+    // Xử lý response dựa trên content-type
+    const contentType = response.headers.get('content-type') || '';
+    const isJson = contentType.includes('application/json');
 
-    if (contentType && contentType.includes('application/json')) {
-      result = await response.json();
-    } else {
-      result = await response.text();
-    }
+    const result = isJson ? await response.json() : await response.text();
 
     if (!response.ok) {
-      // Log lỗi chi tiết
-      console.error(`[API ERROR] ${method} ${endpoint} - Status: ${response.status}`, result);
-
       if (response.status === 401) {
         handleUnauthorized();
         return;
       }
-
-      const errorMessage = (result && result.message) || response.statusText || 'API error';
-      const error = new Error(errorMessage);
+      const errorMsg = result?.message || response.statusText || 'API error';
+      const error = new Error(errorMsg);
       error.status = response.status;
       error.response = result;
       throw error;
     }
 
-    // Log response thành công
-    console.log(`[API RESPONSE] ${method} ${endpoint}`, result);
-
     return result;
-
   } catch (error) {
-    clearTimeout(id);
+    clearTimeout(timeoutId);
+
     if (error.name === 'AbortError') {
-      console.error(`[API TIMEOUT] ${method} ${endpoint} - Request timed out after ${timeout}ms`);
+      console.error(`[API TIMEOUT] ${method} ${endpoint} after ${timeout}ms`);
       throw new Error('Request timed out');
     }
-    console.error(`[API EXCEPTION] ${method} ${endpoint}`, error);
+
+    console.error(`[API ERROR] ${method} ${endpoint}:`, error);
     throw error;
   }
 }
-

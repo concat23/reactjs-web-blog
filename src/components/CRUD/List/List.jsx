@@ -82,13 +82,15 @@ const List = ({
           <table className="entity-list__table" role="table">
             <thead>
               <tr>
-                {(fields.length > 0 ? fields : new Array(5).fill('')).map(
+                {(fields.length > 0 ? fields : new Array(5).fill({ label: '' })).map(
                   (field, index) => (
                     <th key={index} className="entity-list__th">
-                      {field || ''}
+                      {field.label ? t(field.label) : ''}
                     </th>
                   )
                 )}
+
+
                 <th className="entity-list__th">{t('actions')}</th>
               </tr>
             </thead>

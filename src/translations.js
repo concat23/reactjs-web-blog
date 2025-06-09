@@ -1,3 +1,5 @@
+import { FaPlus, FaTimes } from 'react-icons/fa';
+
 const translations = {
   vi: {
     login: {
@@ -104,7 +106,14 @@ const translations = {
         dashboardTitle: "Trang tổng quan",
         nailPolishBottleTitle: "Chai sơn móng tay",
     },
+
+    button:{
+      create: <FaPlus size={18} />,
+    },
    
+     "detail": {
+    "title": "Chi tiết sản phẩm"
+  },
 
     notfound:{
         title: "Không tìm thấy trang",
