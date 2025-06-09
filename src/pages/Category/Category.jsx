@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useCallback, useMemo } from 'react';
 import Container from '../../components/Container/Container';
 
 import { AuthContext } from '../../contexts/AuthContext';
@@ -16,7 +16,9 @@ import CategoryService from '../../api/CategoryService';
 const Category = () => {
   const auth = useContext(AuthContext);
   const { t } = useI18n();
-  const service = new CategoryService(); 
+
+  // Khởi tạo service 1 lần, tránh tạo lại mỗi render
+  const service = useMemo(() => new CategoryService(), []);
 
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -25,20 +27,20 @@ const Category = () => {
 
   const [refreshFlag, setRefreshFlag] = useState(0);
 
-
+  // Load danh sách categories khi mount & khi refreshFlag thay đổi
   useEffect(() => {
-     document.title = t('item.categoryTitle');
+    document.title = t('item.categoryTitle');
     fetchCategories();
-  }, []);
+  }, [t, refreshFlag]);
 
   const fetchCategories = async () => {
     setLoading(true);
     try {
       const response = await service.getAll();
-      setCategories(response || []);
+      setCategories(response?.data || []);
     } catch (error) {
       console.error('Error fetching categories:', error);
-      setPopupMessage(t('category.errorFetch'));
+      setPopupMessage(t('category.errorFetch') || 'Lỗi tải danh mục');
       setPopupOpen(true);
     } finally {
       setLoading(false);
@@ -50,21 +52,21 @@ const Category = () => {
     { name: 'description', label: t('category.description'), type: 'textarea' }
   ];
 
-  const handleLogout = () => {
+  // Logout dùng useCallback để tránh re-render không cần thiết
+  const handleLogout = useCallback(() => {
     sessionStorage.removeItem('progressHasRun');
     auth.logout();
-  };
+  }, [auth]);
 
   const handleSubmit = async (data) => {
     try {
-      await service.create(data); 
-      setPopupMessage(t('category.successMessage'));
+      await service.create(data);
+      setPopupMessage(t('category.successMessage') || 'Tạo mới thành công');
       setPopupOpen(true);
-      setRefreshFlag((prev) => prev + 1);
-      fetchCategories(); // Refresh list
+      setRefreshFlag(prev => prev + 1); // kích hoạt reload danh sách
     } catch (error) {
       console.error('Error creating category:', error);
-      setPopupMessage(t('category.errorMessage'));
+      setPopupMessage(t('category.errorMessage') || 'Tạo mới thất bại');
       setPopupOpen(true);
     }
   };
@@ -72,6 +74,7 @@ const Category = () => {
   return (
     <Container widthVariant="width-80" heightVariant="height-auto" className="dashboard-container">
       <DashboardHeader onLogout={handleLogout} />
+
       <div id="content-wrapper" className="mt-6 px-4">
         <h1 id="page-title" className="text-2xl font-bold text-gray-800">
           {t('dashboard.categoryTitle')}
@@ -81,25 +84,12 @@ const Category = () => {
         </p>
 
         <Group>
-          <Create
-            title={t('category.createTitle')}
-            fields={defaultFields}
-            onSubmit={handleSubmit}
-          />
+          <Create title={t('category.createTitle')} fields={defaultFields} onSubmit={handleSubmit} />
         </Group>
 
-        <Popup
-          isOpen={popupOpen}
-          message={popupMessage}
-          onClose={() => setPopupOpen(false)}
-        />
+        <Popup isOpen={popupOpen} message={popupMessage} onClose={() => setPopupOpen(false)} />
 
-        <List
-          service={service}
-          title={t('category.listTitle')}
-          refreshTrigger={refreshFlag}
-          loading={loading}
-        />
+        <List service={service} title={t('category.listTitle')} refreshTrigger={refreshFlag} loading={loading} />
       </div>
     </Container>
   );

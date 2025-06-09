@@ -1,4 +1,4 @@
-import { apiRequest } from './apiClient';
+import { apiRequest } from '../utils/apiClient';
 
 export default class NailPolishProductService {
   constructor() {
@@ -15,19 +15,19 @@ export default class NailPolishProductService {
     return apiRequest(`${this.apiBaseUrl}/nail-polish-products`, 'GET', null, this.getToken());
   }
 
-  async getProductById(productId) {
+  async getById(productId) {
     return apiRequest(`${this.apiBaseUrl}/nail-polish-products/${productId}`, 'GET', null, this.getToken());
   }
 
-  async createProduct(productData) {
+  async create(productData) {
     return apiRequest(`${this.apiBaseUrl}/nail-polish-products`, 'POST', productData, this.getToken());
   }
 
-  async updateProduct(productId, productData) {
+  async update(productId, productData) {
     return apiRequest(`${this.apiBaseUrl}/nail-polish-products/${productId}`, 'PUT', productData, this.getToken());
   }
 
-  async deleteProduct(productId) {
+  async delete(productId) {
     return apiRequest(`${this.apiBaseUrl}/nail-polish-products/${productId}`, 'DELETE', null, this.getToken());
   }
 }

@@ -1,27 +1,51 @@
+.navbar-scroll-wrapper {
+  overflow-x: auto;
+  white-space: nowrap;
+
+  scrollbar-width: thin;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+}
+
+.navbar-links {
+  
+}
+
 .navbar-links {
   display: flex;
-  align-items: center; // đảm bảo các mục nằm giữa theo chiều dọc
+  align-items: center;
   list-style: none;
   padding: 0;
   margin: 0;
-
-  .labelNav {
-    margin-left: 8px;
-  }
+  gap: 16px;
+  white-space: nowrap; 
 
   li {
-    margin: 0 12px;
     display: flex;
     align-items: center;
+    white-space: nowrap; // ✅ Ngăn text xuống dòng
 
     a {
       color: #ccc;
       text-decoration: none;
       font-weight: 500;
       transition: color 0.3s ease, border-bottom 0.3s ease;
+      white-space: nowrap; // ✅ Ngăn text xuống dòng
 
       &:hover {
-        color: #ffffff;
+        color: #fff;
       }
 
       &.active {
@@ -29,29 +53,24 @@
         border-bottom: 2px solid #00bcd4;
         padding-bottom: 2px;
       }
-    }
-  }
 
-  .btn-logout {
-    background-color: #ff4d4f;
-    border: none;
-    padding: 8px 14px;
-    border-radius: 4px;
-    font-weight: 600;
-    color: white;
-    cursor: pointer;
-    transition: background 0.3s ease;
+      .labelNav {
+        margin-left: 8px;
+        white-space: nowrap; // ✅ Ngăn label xuống dòng
+      }
 
-    &:hover {
-      background-color: #d9363e;
+      .nav-icon {
+        font-size: 16px;
+      }
     }
   }
 
   .user-avatar-container {
+    margin-right: auto;
+    padding: 0 12px;
     display: flex;
     align-items: center;
-    margin-right: auto; // đẩy avatar sang trái, các link sang phải nếu dùng flex-row
-    padding: 0 12px;
+    white-space: nowrap; // ✅ Avatar + tên không bị wrap
 
     .user-avatar {
       display: flex;
@@ -66,10 +85,27 @@
       }
 
       &__name {
-        font-weight: 600;
-        color: #ffffff;
         font-size: 14px;
+        font-weight: 600;
+        color: #fff;
+        white-space: nowrap; // ✅ Ngăn tên bị xuống dòng
       }
+    }
+  }
+
+  .btn-logout {
+    background-color: #ff4d4f;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 4px;
+    font-weight: 600;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    white-space: nowrap; // ✅ Ngăn chữ "Logout" xuống dòng
+
+    &:hover {
+      background-color: #d9363e;
     }
   }
 }

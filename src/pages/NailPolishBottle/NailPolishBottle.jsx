@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useCallback } from 'react';
 import Container from '../../components/Container/Container';
 
 import { AuthContext } from '../../contexts/AuthContext';
@@ -11,60 +11,73 @@ import Popup from '../../components/Popup/Popup';
 
 import BrandService from '../../api/BrandService';
 import CategoryService from '../../api/CategoryService';
+import NailPolishProductService from '../../api/NailPolishProductService';
+import List from '../../components/CRUD/List/List';
 
 const NailPolishBottle = () => {
   const auth = useContext(AuthContext);
   const { t } = useI18n();
 
+  // State cho options
   const [brands, setBrands] = useState([]);
   const [categories, setCategories] = useState([]);
 
+  // State popup & loading
   const [popupOpen, setPopupOpen] = useState(false);
   const [popupMessage, setPopupMessage] = useState('');
+  const [loading, setLoading] = useState(false);
 
+  // Trigger refresh list khi tạo mới thành công
+  const [refreshFlag, setRefreshFlag] = useState(0);
+
+  // Khởi tạo service chỉ 1 lần
+  const brandService = React.useMemo(() => new BrandService(), []);
+  const categoryService = React.useMemo(() => new CategoryService(), []);
+  const productService = React.useMemo(() => new NailPolishProductService(), []);
+
+  // Load brands, categories khi component mount
   useEffect(() => {
-
     document.title = t('item.nailPolishBottleTitle');
 
-    const brandService = new BrandService();
-    const categoryService = new CategoryService();
-
-    brandService.getAll()
-      .then(item => {
-        const options = item.data.map(b => ({ value: b.id.toString(), label: b.name }));
-        setBrands(options);
+    setLoading(true);
+    Promise.all([
+      brandService.getAll(),
+      categoryService.getAll(),
+      productService.getAll(), // nếu bạn dùng dữ liệu này để show list thì xử lý setState ở đây
+    ])
+      .then(([brandRes, categoryRes]) => {
+        const brandOptions = brandRes.data.map(b => ({ value: b.id.toString(), label: b.name }));
+        const categoryOptions = categoryRes.data.map(c => ({ value: c.id.toString(), label: c.name }));
+        setBrands(brandOptions);
+        setCategories(categoryOptions);
       })
-      .catch(console.error);
-
-    categoryService.getAll()
-      .then(item => {
-        const options = item.data.map(c => ({ value: c.id.toString(), label: c.name }));
-        setCategories(options);
+      .catch(error => {
+        console.error('Error loading brands or categories:', error);
+        setPopupMessage(t('nailPolish.loadErrorMessage') || 'Lỗi tải dữ liệu. Vui lòng thử lại.');
+        setPopupOpen(true);
       })
-      .catch(console.error);
+      .finally(() => setLoading(false));
+  }, [brandService, categoryService, productService, t]);
 
-  }, []);
-
-  // Chuyển ngữ label fields
+  // Các trường form, sử dụng dữ liệu options lấy được
   const defaultFields = [
     { name: 'name', label: t('nailPolish.productName'), type: 'text' },
     { name: 'code', label: t('nailPolish.productCode'), type: 'text' },
-    { 
-      name: 'brand_id', 
-      label: t('nailPolish.brand'), 
-      type: 'select',
-      options: brands,
-    },
-    { 
-      name: 'category_id', 
-      label: t('nailPolish.category'), 
-      type: 'select',
-      options: categories,
-    },
+    { name: 'brand_id', label: t('nailPolish.brand'), type: 'select', options: brands },
+    { name: 'category_id', label: t('nailPolish.category'), type: 'select', options: categories },
     { name: 'color_code', label: t('nailPolish.colorCode'), type: 'text' },
     { name: 'color_name', label: t('nailPolish.colorName'), type: 'text' },
     { name: 'hex_color', label: t('nailPolish.hexColor'), type: 'text' },
-    { name: 'finish_type', label: t('nailPolish.finishType'), type: 'text' },
+    {
+      name: 'finish_type',
+      label: t('nailPolish.finishType'),
+      type: 'select',
+      options: [
+        { value: 'shiny', label: 'Shiny' },
+        { value: 'matte', label: 'Matte' },
+        { value: 'glitter', label: 'Glitter' },
+      ],
+    },
     { name: 'volume_ml', label: t('nailPolish.volumeMl'), type: 'number' },
     { name: 'dry_time_seconds', label: t('nailPolish.dryTimeSeconds'), type: 'number' },
     { name: 'durability_days', label: t('nailPolish.durabilityDays'), type: 'number' },
@@ -81,39 +94,45 @@ const NailPolishBottle = () => {
     { name: 'storage_instructions', label: t('nailPolish.storageInstructions'), type: 'textarea' },
   ];
 
-  const handleLogout = () => {
+  // Đăng xuất
+  const handleLogout = useCallback(() => {
     sessionStorage.removeItem('progressHasRun');
     auth.logout();
-  };
+  }, [auth]);
 
-  const handleSubmit = (data) => {
-      console.log('Submit data:', data);
+  // Xử lý submit tạo mới
+  const handleSubmit = async (data) => {
+    const fixedData = {
+      ...data,
+      category_id: Number(data.category_id),
+      brand_id: Number(data.brand_id),
+    };
+
+    try {
+      await productService.create(fixedData);
       setPopupMessage(t('nailPolish.saveSuccessMessage'));
       setPopupOpen(true);
+      setRefreshFlag(prev => prev + 1); // kích hoạt refresh list
+    } catch (error) {
+      console.error('Error saving product:', error);
+      setPopupMessage(t('nailPolish.saveErrorMessage') || 'Lưu thất bại. Vui lòng thử lại.');
+      setPopupOpen(true);
+    }
   };
 
   return (
     <Container widthVariant="width-80" heightVariant="height-auto" className="dashboard-container">
       <DashboardHeader onLogout={handleLogout} />
+
       <div id="content-wrapper" className="mt-6 px-4">
-        <h1 id="page-title" className="text-2xl font-bold text-gray-800">
-          {t('dashboard.nailPolishTitle')}
-        </h1>
-        <p id="page-description" className="text-gray-600 mt-2">
-          {t('dashboard.nailPolishDescription')}
-        </p>
+        <h1 id="page-title" className="text-2xl font-bold text-gray-800">{t('dashboard.nailPolishTitle')}</h1>
+        <p id="page-description" className="text-gray-600 mt-2">{t('dashboard.nailPolishDescription')}</p>
 
-        <Create
-          title={t('nailPolish.formTitle')}
-          fields={defaultFields}
-          onSubmit={handleSubmit}
-        />
+        <Create title={t('nailPolish.formTitle')} fields={defaultFields} onSubmit={handleSubmit} />
 
-        <Popup
-          isOpen={popupOpen}
-          message={popupMessage}
-          onClose={() => setPopupOpen(false)}
-        />
+        <Popup isOpen={popupOpen} message={popupMessage} onClose={() => setPopupOpen(false)} />
+
+        <List service={productService} title={t('nailPolish.listTitle')} refreshTrigger={refreshFlag} loading={loading} />
       </div>
     </Container>
   );

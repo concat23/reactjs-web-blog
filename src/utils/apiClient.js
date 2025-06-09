@@ -3,6 +3,9 @@ import { handleUnauthorized } from './handleUnauthorized';
 export async function apiRequest(endpoint, method = 'GET', data = null, token = null, timeout = 10000) {
   method = method.toUpperCase();
 
+  // Log request info
+  console.log(`[API REQUEST] ${method} ${endpoint}`, data);
+
   const headers = {
     'Accept': 'application/json',
     'Connection': 'keep-alive',
@@ -27,7 +30,6 @@ export async function apiRequest(endpoint, method = 'GET', data = null, token = 
     config.body = JSON.stringify(data);
   }
 
-  // Tạo controller để timeout request
   const controller = new AbortController();
   const id = setTimeout(() => controller.abort(), timeout);
   config.signal = controller.signal;
@@ -46,10 +48,12 @@ export async function apiRequest(endpoint, method = 'GET', data = null, token = 
     }
 
     if (!response.ok) {
-      // Nếu lỗi 401 Unauthorized, gọi logout tự động
+      // Log lỗi chi tiết
+      console.error(`[API ERROR] ${method} ${endpoint} - Status: ${response.status}`, result);
+
       if (response.status === 401) {
         handleUnauthorized();
-        return;  // Ngừng xử lý tiếp
+        return;
       }
 
       const errorMessage = (result && result.message) || response.statusText || 'API error';
@@ -59,13 +63,19 @@ export async function apiRequest(endpoint, method = 'GET', data = null, token = 
       throw error;
     }
 
+    // Log response thành công
+    console.log(`[API RESPONSE] ${method} ${endpoint}`, result);
+
     return result;
 
   } catch (error) {
-    clearTimeout(id); // đảm bảo clear timeout dù có lỗi
+    clearTimeout(id);
     if (error.name === 'AbortError') {
+      console.error(`[API TIMEOUT] ${method} ${endpoint} - Request timed out after ${timeout}ms`);
       throw new Error('Request timed out');
     }
+    console.error(`[API EXCEPTION] ${method} ${endpoint}`, error);
     throw error;
   }
 }
+

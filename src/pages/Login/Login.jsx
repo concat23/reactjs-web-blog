@@ -1,4 +1,4 @@
-import React, { useState, useContext} from 'react';
+import React, { useState, useContext } from 'react';
 import { useI18n } from '../../contexts/I18nContext';
 import { AuthContext } from '../../contexts/AuthContext';
 import { Navigate } from 'react-router-dom';
@@ -8,6 +8,7 @@ import Title from '../../components/Title/Title';
 import Group from '../../components/Group/Group';
 import Container from '../../components/Container/Container';
 import ProgressBar from '../../components/ProcessBar/ProcessBar';
+import '../../pages/Login/Login.scss';
 
 const Login = () => {
   const { t } = useI18n();
@@ -18,6 +19,7 @@ const Login = () => {
   const [error, setError] = useState('');
   const [redirectToDashboard, setRedirectToDashboard] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [showProgress, setShowProgress] = useState(false);
   const [progressData, setProgressData] = useState({
     progress: 0,
     status: 'loading',
@@ -25,9 +27,9 @@ const Login = () => {
   });
 
   React.useEffect(() => {
-     document.title = t('login.title') || 'Đăng nhập';
+    document.title = t('login.title') || 'Đăng nhập';
     let timer;
-    if (isLoading) {
+    if (showProgress) {
       if (progressData.progress >= 100) {
         setRedirectToDashboard(true);
       } else {
@@ -41,16 +43,18 @@ const Login = () => {
       }
     }
     return () => clearTimeout(timer);
-  }, [isLoading, progressData.progress]);
+  }, [showProgress, progressData.progress]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setIsLoading(true);
     try {
       await authContext.login(username, password);
-      setIsLoading(true);
+      setShowProgress(true); // Bắt đầu progress sau khi login thành công
     } catch (err) {
-      setError(err.message);
+      setError(err.message || 'Đăng nhập thất bại');
+      setIsLoading(false);
     }
   };
 
@@ -58,7 +62,7 @@ const Login = () => {
     return <Navigate to="/dashboard" replace />;
   }
 
-  if (isLoading) {
+  if (showProgress) {
     return (
       <div style={{ padding: 50 }}>
         <ProgressBar
@@ -107,7 +111,14 @@ const Login = () => {
             padding="10px 20px"
             margin="15px 0 0 0"
             width="100%"
+            disabled={isLoading}
           />
+          {isLoading && (
+            <div className="spinner-container">
+              <div className="spinner" />
+              <p style={{ marginTop: 10 }}>{t('login.loggingInMessage')}</p>
+            </div>
+          )}
         </form>
       </Group>
     </Container>

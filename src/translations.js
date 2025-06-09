@@ -8,6 +8,7 @@ const translations = {
       usernameError: "Tên đăng nhập không hợp lệ",
       passwordError: "Mật khẩu không hợp lệ",
       loadingStep: "Đang xử lý đăng nhập...",
+      loggingInMessage: "Đang đăng nhập...",
     },
     dashboard: {
       adminTitle: "Trang quản trị",
@@ -103,7 +104,6 @@ const translations = {
         dashboardTitle: "Trang tổng quan",
         nailPolishBottleTitle: "Chai sơn móng tay",
     },
-
    
 
     notfound:{
