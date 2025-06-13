@@ -1,5 +1,6 @@
 import React from 'react';
 import './Input.scss';
+import FieldError from '../FieldError/FieldError';
 
 const Input = ({
   label,
@@ -33,12 +34,7 @@ const Input = ({
         aria-describedby={error ? `${name}-error` : undefined}
       />
       {error && (
-        <span
-          id={`${name}-error`}
-          style={{ color: '#dc3545', marginTop: '4px', fontSize: '13px' }}
-        >
-          {error}
-        </span>
+        <FieldError name="error" error={error} />
       )}
     </div>
   );

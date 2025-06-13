@@ -30,4 +30,59 @@ export default class NailPolishProductService {
   async delete(productId) {
     return apiRequest(`${this.apiBaseUrl}/nail-polish-products/${productId}`, 'DELETE', null, this.getToken());
   }
+
+  async uploadImages(productId, imageFiles) {
+   
+    if (!productId || typeof productId !== 'number') {
+      throw new Error('Invalid product ID');
+    }
+
+    if (!Array.isArray(imageFiles) || imageFiles.length === 0) {
+      throw new Error('No images provided for upload');
+    }
+
+    const formData = new FormData();
+
+    for (const file of imageFiles) {
+      if (!(file instanceof File)) {
+        throw new Error('Invalid file provided');
+      }
+
+      // Tuỳ chọn: kiểm tra loại file
+      const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+      if (!allowedTypes.includes(file.type)) {
+        throw new Error(`File type ${file.type} is not allowed`);
+      }
+
+      const maxSize = 5 * 1024 * 1024;
+      if (file.size > maxSize) {
+        throw new Error(`File ${file.name} is too large (max 5MB)`);
+      }
+
+      formData.append('images[]', file);
+    }
+
+    try {
+      const response = await fetch(`${this.apiBaseUrl}/nail-polish-products/${productId}/upload-images`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${this.getToken()}`
+        },
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const errorResponse = await response.json().catch(() => ({}));
+        const message = errorResponse.message || `Server error (${response.status})`;
+        throw new Error(message);
+      }
+
+      return await response.json();
+
+    } catch (error) {
+      console.error('Image upload failed:', error);
+      throw new Error(`Upload failed: ${error.message}`);
+    }
+  }
+
 }

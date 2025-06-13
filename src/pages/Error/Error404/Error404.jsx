@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Particles from 'react-tsparticles';
-import './NotFound.scss';
+import '../../Error/Error.scss'
 
 import { useI18n } from '../../../contexts/I18nContext'
 
@@ -104,7 +104,7 @@ const particlesOptions = {
   detectRetina: true,
 };
 
-const NotFound = () => {
+const Error404 = () => {
      const { t } = useI18n();
 
 
@@ -138,4 +138,4 @@ const NotFound = () => {
   );
 };
 
-export default NotFound;
+export default Error404;

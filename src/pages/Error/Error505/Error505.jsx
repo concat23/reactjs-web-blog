@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Particles from 'react-tsparticles';
 import { useI18n } from '../../../contexts/I18nContext'
-import './Error505.scss';
+import '../../Error/Error.scss'
 
 const particlesOptions = {
   background: {

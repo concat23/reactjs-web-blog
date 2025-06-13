@@ -34,6 +34,8 @@ const NailPolishBottle = () => {
   const [refreshFlag, setRefreshFlag] = useState(0);
 
   const [selectedItem, setSelectedItem] = useState(null);
+  const [selectedImages, setSelectedImages] = useState([]);
+
 
   // Khởi tạo service chỉ 1 lần
   const brandService = React.useMemo(() => new BrandService(), []);
@@ -106,16 +108,24 @@ const fields = defaultFields.map(field =>
     };
 
     try {
-      await productService.create(fixedData);
+      const createdProduct = await productService.create(fixedData);
+
+
+      if (selectedImages.length > 0) {
+        await productService.uploadImages(createdProduct.data.id, selectedImages);
+      }
+
       setPopupMessage(t('nailPolish.saveSuccessMessage'));
       setPopupOpen(true);
-      setRefreshFlag(prev => prev + 1); // kích hoạt refresh list
+      setSelectedImages([]);
+      setRefreshFlag(prev => prev + 1); 
     } catch (error) {
-      console.error('Error saving product:', error);
+      console.error('Error saving or uploading product:', error);
       setPopupMessage(t('nailPolish.saveErrorMessage') || 'Lưu thất bại. Vui lòng thử lại.');
       setPopupOpen(true);
     }
   };
+
 
   return (
     <Container widthVariant="width-80" heightVariant="height-auto" className="dashboard-container">
@@ -134,7 +144,7 @@ const fields = defaultFields.map(field =>
           disableToggleOff={true}
         />
 
-        <Detail item={selectedItem} onClose={() => setSelectedItem(null)} fields={fields} service={productService} />
+        <Detail title="nailPolish.detail.title" item={selectedItem} onClose={() => setSelectedItem(null)} fields={fields} service={productService} />
         
         <Popup isOpen={popupOpen} message={popupMessage} onClose={() => setPopupOpen(false)} />
 

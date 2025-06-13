@@ -9,7 +9,7 @@ import {
 import Login from '../pages/Login/Login';
 import Dashboard from '../pages/Dashboard/Dashboard';
 import NailPolishBottle from '../pages/NailPolishBottle/NailPolishBottle';
-import NotFound from '../pages/Error/NotFound/NotFound'; // ✅ Import trang NotFound
+import Error404 from '../pages/Error/Error404/Error404'; // ✅ Import trang NotFound
 
 import PrivateRoute from '../components/PrivateRoute';
 import PublicRoute from '../components/PublicRoute';
@@ -17,6 +17,11 @@ import { AuthContext } from '../contexts/AuthContext';
 import Error505 from '../pages/Error/Error505/Error505';
 import Category from '../pages/Category/Category';
 import Brand from '../pages/Brand/Brand';
+import Media from '../pages/Media/Media';
+import BadRequest from '../pages/Error/Error400/Error400';
+import Forbidden from '../pages/Error/Error403/Error403';
+import Error400 from '../pages/Error/Error400/Error400';
+import Error403 from '../pages/Error/Error403/Error403';
 
 class AdminRootRedirect extends Component {
   static contextType = AuthContext;
@@ -85,10 +90,21 @@ class AppRoutes extends Component {
               </PrivateRoute>
             }
           />
+            <Route
+            path="/media"
+            element={
+              <PrivateRoute>
+                <Media />
+              </PrivateRoute>
+            }
+          />
 
           {/* ✅ Bắt mọi route không khớp */}
-           <Route path="/error/505" element={<Error505 />} />
-          <Route path="*" element={<NotFound />} />
+          <Route path="/admin/error/505" element={<Error505 />} />
+          <Route path="/admin/error/400" element={<Error400 />} />
+          <Route path="/admin/error/403" element={<Error403 />} />
+          <Route path="*" element={<Error404 />} />
+
          
         </Routes>
       </BrowserRouter>

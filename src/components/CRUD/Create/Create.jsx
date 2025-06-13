@@ -33,35 +33,56 @@ const Create = ({ title, fields, onSubmit }) => {
     if (message) setMessage('');
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+ const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    const requiredFields = fields.filter((f) => f.required !== false);
+  const requiredFields = fields.filter((f) => f.required !== false);
+  const hasEmpty = requiredFields.some((f) => {
+    const val = formData[f.name];
+    if (f.type === 'checkbox') return !val;
+    return !val || val === '';
+  });
 
-    // Validation đơn giản cho checkbox (nếu required thì phải true)
-    const hasEmpty = requiredFields.some((f) => {
-      const val = formData[f.name];
-      if (f.type === 'checkbox') return !val;
-      return !val || val === '';
-    });
+  if (hasEmpty) {
+    setMessage(t('dashboard.validationFillRequired'));
+    return;
+  }
 
-    if (hasEmpty) {
-      setMessage(t('dashboard.validationFillRequired')); // "Vui lòng điền tất cả các trường bắt buộc."
-      return;
+  try {
+    setLoading(true);
+    const dataToSubmit = { ...formData };
+
+    // ✅ Nếu có trường uploadImages, tiến hành upload từng ảnh
+    if (dataToSubmit.uploadImages) {
+      const uploadedUrls = [];
+
+      for (const file of dataToSubmit.uploadImages) {
+        const formDataUpload = new FormData();
+        formDataUpload.append('file', file);
+        formDataUpload.append('upload_preset', 'your_upload_preset');
+
+        const res = await fetch('https://api.cloudinary.com/v1_1/your_cloud_name/image/upload', {
+          method: 'POST',
+          body: formDataUpload,
+        });
+
+        const json = await res.json();
+        uploadedUrls.push(json.secure_url);
+      }
+
+      // Gán lại đường dẫn vào uploadImages
+      dataToSubmit.uploadImages = uploadedUrls;
     }
 
-    try {
-      setLoading(true);
-      await onSubmit(formData);
-      setMessage(t('dashboard.createdSuccessfully', { title })); // "Tạo {title} thành công!"
-      setFormData(initialState);
-    } catch (err) {
-      setMessage(t('dashboard.errorCreating', { title: title.toLowerCase(), message: err.message }));
-      // "Lỗi khi tạo {title}: {message}"
-    } finally {
-      setLoading(false);
-    }
-  };
+    await onSubmit(dataToSubmit);
+    setMessage(t('dashboard.createdSuccessfully', { title }));
+    setFormData(initialState);
+  } catch (err) {
+    setMessage(t('dashboard.errorCreating', { title: title.toLowerCase(), message: err.message }));
+  } finally {
+    setLoading(false);
+  }
+};
 
   const renderField = (field) => {
     const { name, label, type, options, multiple, placeholder } = field;

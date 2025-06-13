@@ -130,12 +130,45 @@ $transition-fast: 0.25s ease-in-out;
     td {
       padding: 0.9rem 1.2rem;
       border-bottom: 1px solid #eee;
-      vertical-align: middle;
-      max-width: 180px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      vertical-align: top;
+      max-width: 220px;
+      overflow: auto;
+      word-wrap: break-word;
+      white-space: normal;
       position: relative;
+      font-size: 0.96rem;
+      line-height: 1.45;
+      color: $color-text-main;
+
+      a {
+        color: $color-primary-dark;
+        font-weight: 600;
+        text-decoration: none;
+        transition: color 0.25s ease-in-out, text-decoration 0.25s ease;
+
+        &:hover {
+          color: $color-primary;
+          text-decoration: underline;
+        }
+
+        &:focus {
+          outline: 2px solid $color-primary;
+          outline-offset: 2px;
+          border-radius: 4px;
+        }
+
+        &:visited {
+          color: darken($color-primary-dark, 15%);
+        }
+      }
+
+      &.img{
+        max-height: 48px;
+        border-radius: 6px;
+        margin-bottom: 4px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        object-fit: contain;
+      }
 
       &.status {
         font-weight: 700;
@@ -164,6 +197,29 @@ $transition-fast: 0.25s ease-in-out;
           background-color: #fdecea;
           box-shadow: 0 0 6px rgba(231, 76, 60, 0.3);
         }
+
+         &.nowrap {
+          white-space: nowrap;
+          overflow-x: auto;
+          text-overflow: ellipsis;
+        }
+
+        p, span, div {
+        color: inherit;
+        margin: 0;
+        font-size: 0.95rem;
+        line-height: 1.5;
+        word-break: break-word;
+      }
+    // Optional scrollbar styling (WebKit)
+    &::-webkit-scrollbar {
+      height: 6px;
+      width: 6px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: rgba(0, 0, 0, 0.15);
+      border-radius: 3px;
+    }
       }
 
       &.actions {
@@ -215,6 +271,8 @@ $transition-fast: 0.25s ease-in-out;
         }
       }
     }
+
+    
   }
 
   // Responsive adjustments
@@ -329,4 +387,10 @@ $transition-fast: 0.25s ease-in-out;
       }
     }
   }
+
+  
 }
+
+
+
+

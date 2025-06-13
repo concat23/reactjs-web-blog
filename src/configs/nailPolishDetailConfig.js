@@ -2,6 +2,14 @@
 
 const nailPolishDetailConfig = (t, brands = [], categories = []) => [
   { name: 'name', label: t('nailPolish.productName'), type: 'text' },
+  {
+    name: 'images_urls',
+    label: t('nailPolish.images'),
+    type: 'file', // hoặc 'upload' nếu component hỗ trợ
+    multiple: true,
+    accept: 'image/*', // chỉ cho phép file ảnh
+    upload: true // tuỳ thuộc vào component xử lý
+},
   { name: 'code', label: t('nailPolish.productCode'), type: 'text' },
   {
     name: 'brand_id',
@@ -17,7 +25,6 @@ const nailPolishDetailConfig = (t, brands = [], categories = []) => [
   },
   { name: 'color_code', label: t('nailPolish.colorCode'), type: 'text' },
   { name: 'color_name', label: t('nailPolish.colorName'), type: 'text' },
-  { name: 'hex_color', label: t('nailPolish.hexColor'), type: 'color' }, // để hiển thị ô màu nhỏ
   {
     name: 'finish_type',
     label: t('nailPolish.finishType'),

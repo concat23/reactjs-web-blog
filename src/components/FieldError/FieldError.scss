@@ -1,0 +1,76 @@
+$field-error-color: #d32f2f;
+$field-error-bg: rgba(211, 47, 47, 0.05);
+$field-error-border: rgba(211, 47, 47, 0.4);
+$field-error-glow: rgba(211, 47, 47, 0.12);
+
+.field-error {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+  padding: 10px 14px;
+  font-size: 14px;
+  color: $field-error-color;
+  font-weight: 500;
+  background: $field-error-bg;
+  border-left: 4px solid $field-error-border;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px $field-error-glow;
+  animation: fadeInError 0.35s ease-out;
+  position: relative;
+  transition: all 0.3s ease;
+
+  &::before {
+    content: '\26A0'; // ⚠️
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    background: rgba(211, 47, 47, 0.1);
+    border-radius: 50%;
+    color: $field-error-color;
+    animation: iconPop 0.4s ease-in-out;
+    flex-shrink: 0;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 10px;
+    width: calc(100% - 20px);
+    height: 2px;
+    background: linear-gradient(
+      to right,
+      rgba(211, 47, 47, 0.25),
+      transparent
+    );
+    border-radius: 1px;
+  }
+}
+
+// Fade in text
+@keyframes fadeInError {
+  0% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Subtle icon pop
+@keyframes iconPop {
+  0% {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

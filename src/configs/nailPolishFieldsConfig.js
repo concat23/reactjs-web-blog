@@ -2,12 +2,19 @@
 
 const nailPolishFieldsConfig = (t, brands = [], categories = []) => [
   { name: 'name', label: t('nailPolish.productName'), type: 'text' },
+  {
+    name: 'images_urls',
+    label: t('nailPolish.images'),
+    type: 'file', 
+    multiple: true,
+    accept: 'image/*',
+    upload: true 
+    },
   { name: 'code', label: t('nailPolish.productCode'), type: 'text' },
   { name: 'brand_id', label: t('nailPolish.brand'), type: 'select', options: brands },
   { name: 'category_id', label: t('nailPolish.category'), type: 'select', options: categories },
   { name: 'color_code', label: t('nailPolish.colorCode'), type: 'text' },
   { name: 'color_name', label: t('nailPolish.colorName'), type: 'text' },
-  { name: 'hex_color', label: t('nailPolish.hexColor'), type: 'text' },
   {
     name: 'finish_type',
     label: t('nailPolish.finishType'),

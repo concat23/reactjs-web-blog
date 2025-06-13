@@ -1,0 +1,96 @@
+// Variables (hoặc import từ `_variables.scss` nếu có)
+$color-text-main: #1f2937;         // Tailwind: text-gray-800
+$color-text-sub: #4b5563;          // Tailwind: text-gray-600
+$color-label: #374151;             // Tailwind: text-gray-700
+$color-muted: #6b7280;             // Tailwind: text-gray-500
+$color-bg-light: #f9fafb;
+$color-file-btn: #eff6ff;
+$color-file-btn-hover: #dbeafe;
+$color-file-text: #1d4ed8;
+
+$font-sm: 0.875rem;
+$font-xs: 0.75rem;
+$spacing: 1rem;
+
+// Mixin: File input button style
+@mixin file-button {
+  &::file-selector-button {
+    margin-right: 1rem;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 9999px;
+    font-size: $font-sm;
+    font-weight: 600;
+    color: $color-file-text;
+    background-color: $color-file-btn;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: $color-file-btn-hover;
+    }
+  }
+}
+
+// Main container
+.dashboard-container {
+  background-color: $color-bg-light;
+  padding-bottom: 2rem;
+
+  #content-wrapper {
+    margin-top: 1.5rem;
+    padding: 0 $spacing;
+
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: $color-text-main;
+    }
+
+    p {
+      color: $color-text-sub;
+      margin: 0.5rem 0 1rem;
+    }
+
+    .upload-wrapper {
+      margin-bottom: 1.5rem;
+
+      label {
+        display: block;
+        font-size: $font-sm;
+        font-weight: 500;
+        color: $color-label;
+        margin-bottom: 0.5rem;
+      }
+
+      input[type='file'] {
+        display: block;
+        width: 100%;
+        font-size: $font-sm;
+        color: $color-muted;
+
+        @include file-button;
+
+        &:focus {
+          outline: none;
+          box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5); // Tailwind focus:ring
+        }
+      }
+
+      p {
+        font-size: $font-xs;
+        color: $color-muted;
+        margin-top: 0.25rem;
+      }
+    }
+
+    // Responsive layout (optional)
+    @media (max-width: 768px) {
+      padding: 0 0.75rem;
+
+      h1 {
+        font-size: 1.25rem;
+      }
+    }
+  }
+}

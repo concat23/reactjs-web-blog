@@ -9,6 +9,7 @@ import Group from '../../components/Group/Group';
 import Container from '../../components/Container/Container';
 import ProgressBar from '../../components/ProcessBar/ProcessBar';
 import '../../pages/Login/Login.scss';
+import ErrorMessage from '../../components/ErrorMessage/ErrorMessage';
 
 const Login = () => {
   const { t } = useI18n();
@@ -100,7 +101,7 @@ const Login = () => {
               required
             />
           </div>
-          {error && <p style={{ color: 'red', marginTop: 10 }}>{error}</p>}
+          {error && <ErrorMessage message={error} />}
           <Button
             type="submit"
             label={t('login.loginButton')}

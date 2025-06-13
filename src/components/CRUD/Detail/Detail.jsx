@@ -2,16 +2,31 @@ import React from 'react';
 import './Detail.scss';
 import { useI18n } from '../../../contexts/I18nContext';
 
-const Detail = ({ item, onClose, fields }) => {
+const Detail = ({ title,item, onClose, fields }) => {
   const { t } = useI18n();
 
   if (!item) return null;
 
+  const isImageFile = (url = '') =>
+    /\.(jpg|jpeg|png|gif|webp|bmp|svg)$/i.test(url);
+
+  const isVideoFile = (url = '') =>
+    /\.(mp4|webm|ogg)$/i.test(url);
+
+  const isPdfFile = (url = '') =>
+    /\.pdf$/i.test(url);
+
   return (
     <div className="detail-overlay" onClick={onClose}>
-      <div className="detail-card" onClick={e => e.stopPropagation()}>
-        <button className="detail-close" onClick={onClose} aria-label={t('detail.closeButton')}>×</button>
-        <h2 className="detail-title">{t('detail.title')}</h2>
+      <div className="detail-card" onClick={(e) => e.stopPropagation()}>
+        <button
+          className="detail-close"
+          onClick={onClose}
+          aria-label={t('detail.closeButton')}
+        >
+          ×
+        </button>
+        <h2 className="detail-title">{t(title)}</h2>
 
         <table className="detail-table" role="table" aria-label={t('detail.title')}>
           <tbody>
@@ -20,14 +35,12 @@ const Detail = ({ item, onClose, fields }) => {
               let displayValue = '';
 
               if (options && Array.isArray(options)) {
-                // Tìm option khớp với value, hỗ trợ cả string, number, boolean
-                const matched = options.find(opt => {
-                  // So sánh strict với kiểu tương ứng, chuyển value thành string nếu opt.value là string
-                  return opt.value === value || String(opt.value) === String(value);
-                });
+                const matched = options.find(
+                  (opt) =>
+                    opt.value === value || String(opt.value) === String(value)
+                );
                 displayValue = matched ? matched.label : value?.toString() || '';
               } else if (typeof value === 'object' && value !== null) {
-                // Nếu value là object thì stringify (có thể tùy chỉnh thêm nếu cần)
                 displayValue = JSON.stringify(value, null, 2);
               } else {
                 displayValue = value?.toString() || '';
@@ -36,7 +49,45 @@ const Detail = ({ item, onClose, fields }) => {
               return (
                 <tr key={name}>
                   <td className="detail-label">{t(label)}</td>
-                  <td className="detail-value">{displayValue}</td>
+                  <td className="detail-value">
+                    {name === 'url' && isImageFile(displayValue) ? (
+                      <div className="media-preview-wrapper">
+                        <img
+                          src={displayValue}
+                          alt={item.original_name || 'media'}
+                          className="media-image-preview"
+                        />
+                      </div>
+                    ) : name === 'url' && isVideoFile(displayValue) ? (
+                      <div className="media-preview-wrapper">
+                        <video
+                          controls
+                          src={displayValue}
+                          className="media-video-preview"
+                        />
+                      </div>
+                    ) : name === 'url' && isPdfFile(displayValue) ? (
+                      <a
+                        href={displayValue}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="media-link"
+                      >
+                        📄 {t('detail.viewPdf') || 'Xem PDF'}
+                      </a>
+                    ) : name === 'url' ? (
+                      <a
+                        href={displayValue}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="media-link"
+                      >
+                        {displayValue}
+                      </a>
+                    ) : (
+                      displayValue
+                    )}
+                  </td>
                 </tr>
               );
             })}

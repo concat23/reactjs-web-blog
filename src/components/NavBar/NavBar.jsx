@@ -7,17 +7,12 @@ import './NavBar.scss';
 import Logo from '../Logo/Logo';
 
 import { faHome,faPaintBrush, faTags, faCog } from '@fortawesome/free-solid-svg-icons';
+import linksConfig from '../../configs/linksConfig';
 
 const NavBar = ({ onLogout }) => {
   const { t } = useI18n();
 
-  const links = [
-    { to: '/dashboard', label: t('dashboard.adminTitle'), icon: faHome },
-    { to: '/category', label: t('item.categories'), icon: faTags },
-    { to: '/brand', label: t('item.brand'), icon: faTags },
-    { to: '/nail-polish-bottle', label: t('item.nailPolishBottle'), icon: faPaintBrush },
-    { to: '/settings', label: t('item.settings'), icon: faCog },
-  ];
+  const links = linksConfig(t);
 
   return (
     <nav className="navbar">

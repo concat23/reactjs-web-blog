@@ -29,56 +29,73 @@ const translations = {
       brandTitle: "Thương hiệu",
       brandName: "Tên thương hiệu",
       brandDescription: "Trang này hiển thị các thương hiệu sản phẩm",
-
       createButton: "Tạo mới",
-
-       validationFillRequired: "Vui lòng điền tất cả các trường bắt buộc.",
+      validationFillRequired: "Vui lòng điền tất cả các trường bắt buộc.",
       createdSuccessfully: "Tạo {{title}} thành công!",
       errorCreating: "Lỗi khi tạo {{title}}: {{message}}",
       selectPlaceholder: "-- Chọn --",
       creating: "Đang tạo...",
-
     },
-
-    "nailPolish": {
-    "formTitle": "Thông tin sản phẩm sơn móng tay",
-    "productName": "Tên sản phẩm",
-    "productCode": "Mã sản phẩm",
-    "brand": "Thương hiệu",
-    "category": "Danh mục",
-    "colorCode": "Mã màu",
-    "colorName": "Tên màu",
-    "hexColor": "Màu HEX",
-    "finishType": "Loại hoàn thiện",
-    "volumeMl": "Dung tích (ml)",
-    "dryTimeSeconds": "Thời gian khô (giây)",
-    "durabilityDays": "Độ bền (ngày)",
-    "isVegan": "Thuần chay",
-    "isCrueltyFree": "Không thử nghiệm trên động vật",
-    "isToxicFree": "Không độc hại",
-    "priceVnd": "Giá (VND)",
-    "currency": "Tiền tệ",
-    "manufactureDate": "Ngày sản xuất",
-    "expiryDate": "Ngày hết hạn",
-    "barcode": "Mã vạch",
-    "usageInstructions": "Hướng dẫn sử dụng",
-    "warningNotes": "Lưu ý cảnh báo",
-    "storageInstructions": "Hướng dẫn bảo quản",
-    "saveSuccessMessage": "Sản phẩm sơn móng tay đã được lưu thành công!"
-  },
-
-    category:{
-        listTitle: "Danh mục sản phẩm",
-        createTitle: "Tạo mới",
-        createDescription: "Trang này cho phép bạn tạo mới một mục",
-        createButton: "Tạo mới",
-        name: "Tên danh mục",
-        description: "Mô tả danh mục",
-        successMessage: "Danh mục đã được tạo thành công!",
-        errorMessage: "Đã xảy ra lỗi khi tạo danh mục. Vui lòng thử lại.",
-        errorFetch: "Không thể tải danh mục. Vui lòng thử lại sau.",
+    nailPolish: {
+      formTitle: "Thông tin sản phẩm sơn móng tay",
+      productName: "Tên sản phẩm",
+      productCode: "Mã sản phẩm",
+      brand: "Thương hiệu",
+      category: "Danh mục",
+      colorCode: "Mã màu",
+      colorName: "Tên màu",
+      hexColor: "Màu HEX",
+      finishType: "Loại hoàn thiện",
+      volumeMl: "Dung tích (ml)",
+      dryTimeSeconds: "Thời gian khô (giây)",
+      durabilityDays: "Độ bền (ngày)",
+      isVegan: "Thuần chay",
+      isCrueltyFree: "Không thử nghiệm trên động vật",
+      isToxicFree: "Không độc hại",
+      priceVnd: "Giá (VND)",
+      currency: "Tiền tệ",
+      manufactureDate: "Ngày sản xuất",
+      expiryDate: "Ngày hết hạn",
+      barcode: "Mã vạch",
+      usageInstructions: "Hướng dẫn sử dụng",
+      warningNotes: "Lưu ý cảnh báo",
+      storageInstructions: "Hướng dẫn bảo quản",
+      saveSuccessMessage: "Sản phẩm sơn móng tay đã được lưu thành công!",
+      images: "Hình ảnh",
+      detail: {
+        title: "Chi tiết Sản phẩm Sơn Móng Tay"
+      }
     },
-    brand:{
+    media: {
+      pageTitle: "Quản lý Media",
+      uploadSuccess: "Tải lên thành công",
+      uploadError: "Tải lên thất bại",
+      selectFile: "Chọn file để tải lên",
+      allowedTypes: "Hỗ trợ định dạng: hình ảnh, video, PDF",
+      listTitle: "Danh sách media",
+      originalName: "Tên gốc",
+      publicId: "ID công khai",
+      fileType: "Loại file",
+      uploadType: "Loại tải lên",
+      createdAt: "Ngày tạo",
+      updatedAt: "Ngày cập nhật",
+      url: "URL",
+      detail: {
+        title: "Chi tiết Media"
+      }
+    },
+    category: {
+      listTitle: "Danh mục sản phẩm",
+      createTitle: "Tạo mới",
+      createDescription: "Trang này cho phép bạn tạo mới một mục",
+      createButton: "Tạo mới",
+      name: "Tên danh mục",
+      description: "Mô tả danh mục",
+      successMessage: "Danh mục đã được tạo thành công!",
+      errorMessage: "Đã xảy ra lỗi khi tạo danh mục. Vui lòng thử lại.",
+      errorFetch: "Không thể tải danh mục. Vui lòng thử lại sau.",
+    },
+    brand: {
       createTitle: "Tạo thương hiệu mới",
       name: "Tên thương hiệu",
       country: "Quốc gia",
@@ -90,38 +107,35 @@ const translations = {
       listTitle: "Danh sách thương hiệu",
       createDescription: "Trang này cho phép bạn tạo mới một thương hiệu",
     },
-    item:{
-        nailPolishBottle: "Lọ sơn móng tay",
-        categories: "Danh mục",
-        settings: "Cài đặt",
-        clockTitle: "Đồng hồ",
-        brand: "Thương hiệu",
-        color: "Màu sắc",
-        size: "Kích thước",
-        price: "Giá",
-        quantity: "Số lượng",
-        description: "Mô tả",
-        brandTitle: "Thương hiệu",
-        categoryTitle: "Danh mục",
-        dashboardTitle: "Trang tổng quan",
-        nailPolishBottleTitle: "Chai sơn móng tay",
+    item: {
+      nailPolishBottle: "Lọ sơn móng tay",
+      categories: "Danh mục",
+      settings: "Cài đặt",
+      clockTitle: "Đồng hồ",
+      brand: "Thương hiệu",
+      color: "Màu sắc",
+      size: "Kích thước",
+      price: "Giá",
+      quantity: "Số lượng",
+      description: "Mô tả",
+      brandTitle: "Thương hiệu",
+      categoryTitle: "Danh mục",
+      dashboardTitle: "Trang tổng quan",
+      nailPolishBottleTitle: "Chai sơn móng tay",
+      media: "Quản lý Media",
+      mediaTitle: "Trang quản lý Media",
     },
-
-    button:{
-      create: <FaPlus size={18} />,
+    button: {
+      create: "Tạo mới", // JSX như <FaPlus /> KHÔNG dùng được trong JSON config
     },
-   
-     "detail": {
-    "title": "Chi tiết sản phẩm"
-  },
-
-    notfound:{
-        title: "Không tìm thấy trang",
-        description: "Trang bạn đang tìm kiếm không tồn tại.",
-        backToHome: "Quay về trang chủ",
-        records: "Không có bản ghi nào",
+    notfound: {
+      title: "Không tìm thấy trang",
+      description: "Trang bạn đang tìm kiếm không tồn tại.",
+      backToHome: "Quay về trang chủ",
+      records: "Không có bản ghi nào",
     }
   },
+
   en: {
     login: {
       title: "Login",
@@ -139,7 +153,7 @@ const translations = {
       progressStepStart: "Starting process...",
       progressStepComplete: "Completed",
     },
-  },
+  }
 };
 
 export default translations;

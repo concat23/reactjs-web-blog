@@ -1,21 +1,38 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap');
-
 // Variables
-$primary-gradient: linear-gradient(to right, #ff416c, #ff4b2b);
-$bg-color: linear-gradient(to bottom, #fdfbfb, #ebedee);
 $font-family-main: 'Outfit', sans-serif;
 $text-dark: #222;
 $text-muted: #555;
 $shadow-color: rgba(0, 0, 0, 0.1);
-$shadow-strong: rgba(255, 75, 50, 0.3);
 $blur-bg: rgba(255, 255, 255, 0.75);
 
-// Container
+// Theme gradients for different error types
+$error-colors: (
+  400: #e67e22,
+  403: #f39c12,
+  404: #ff4b2b,
+  500: #e74c3c
+);
+
+$error-gradients: (
+  400: linear-gradient(to right, #f2994a, #f2c94c),
+  403: linear-gradient(to right, #f1c40f, #e67e22),
+  404: linear-gradient(to right, #ff416c, #ff4b2b),
+  500: linear-gradient(to right, #e74c3c, #c0392b)
+);
+
+@each $code, $color in $error-colors {
+  .error-#{$code} {
+    --primary-color: #{$color};
+    --primary-gradient: #{map-get($error-gradients, $code)};
+  }
+}
+
+// Main container
 .notfound-container {
   font-family: $font-family-main;
   position: relative;
   min-height: 100vh;
-  background: $bg-color;
+  background: linear-gradient(to bottom, #fdfbfb, #ebedee);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -37,15 +54,14 @@ $blur-bg: rgba(255, 255, 255, 0.75);
     position: relative;
     z-index: 1;
     backdrop-filter: blur(12px) saturate(180%);
-    -webkit-backdrop-filter: blur(12px) saturate(180%);
     background-color: $blur-bg;
     border: 1px solid rgba(209, 213, 219, 0.3);
     border-radius: 20px;
     padding: 3rem 2rem;
     max-width: 560px;
     width: 100%;
-    box-shadow: 0 12px 40px $shadow-color;
     text-align: center;
+    box-shadow: 0 12px 40px $shadow-color;
     animation: fadeInUp 1s ease-out;
 
     .notfound-icon {
@@ -54,6 +70,7 @@ $blur-bg: rgba(255, 255, 255, 0.75);
       svg {
         display: inline-block;
         animation: pulseIcon 3s ease-in-out infinite;
+        fill: var(--primary-color);
       }
     }
 
@@ -62,7 +79,7 @@ $blur-bg: rgba(255, 255, 255, 0.75);
       font-size: 6rem;
       font-weight: 800;
       margin-bottom: 1rem;
-      background: $primary-gradient;
+      background: var(--primary-gradient, linear-gradient(to right, #ff416c, #ff4b2b));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       animation: bounce 2s infinite, shake 3s ease-in-out infinite;
@@ -76,12 +93,11 @@ $blur-bg: rgba(255, 255, 255, 0.75);
         transform: translateY(-50%);
         width: 72px;
         height: 72px;
-        background-image: url('../../../../public/images/bee.png');
+        background-image: url('../../../public/images/bee.png');
         background-size: cover;
         background-repeat: no-repeat;
         opacity: 0.85;
         animation: floatBee 4s ease-in-out infinite;
-        pointer-events: none;
         filter: drop-shadow(0 5px 8px rgba(0, 0, 0, 0.2));
       }
 
@@ -104,7 +120,6 @@ $blur-bg: rgba(255, 255, 255, 0.75);
       font-weight: 700;
       margin-bottom: 1rem;
       color: $text-dark;
-      letter-spacing: 0.5px;
     }
 
     .notfound-description {
@@ -121,12 +136,12 @@ $blur-bg: rgba(255, 255, 255, 0.75);
       font-size: 1rem;
       font-weight: 600;
       color: white;
-      background: $primary-gradient;
+      background: var(--primary-gradient, linear-gradient(to right, #ff416c, #ff4b2b));
       border: none;
       border-radius: 50px;
       cursor: pointer;
       text-decoration: none;
-      box-shadow: 0 6px 20px $shadow-strong;
+      box-shadow: 0 6px 20px rgba(255, 75, 50, 0.3);
       transition: all 0.3s ease-in-out;
 
       &:hover {
@@ -155,25 +170,13 @@ $blur-bg: rgba(255, 255, 255, 0.75);
 }
 
 @keyframes shadowPulse {
-  0%, 100% {
-    transform: scale(1);
-    opacity: 0.2;
-  }
-  50% {
-    transform: scale(1.3);
-    opacity: 0.4;
-  }
+  0%, 100% { transform: scale(1); opacity: 0.2; }
+  50% { transform: scale(1.3); opacity: 0.4; }
 }
 
 @keyframes fadeInUp {
-  0% {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes shake {
