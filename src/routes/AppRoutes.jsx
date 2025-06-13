@@ -104,7 +104,6 @@ class AppRoutes extends Component {
           <Route path="/admin/error/400" element={<Error400 />} />
           <Route path="/admin/error/403" element={<Error403 />} />
           <Route path="*" element={<Error404 />} />
-
          
         </Routes>
       </BrowserRouter>
