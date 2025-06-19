@@ -19,6 +19,7 @@ import MediaService from '../../api/MediaService';
 import './Media.scss';
 import mediaDetailConfig from '../../configs/mediaDetailConfig';
 import Detail from '../../components/CRUD/Detail/Detail';
+import FileUploadInput from '../../components/FileUploadInput/FileUploadInput';
 
 const Media = () => {
   const auth = useContext(AuthContext);
@@ -88,28 +89,11 @@ const Media = () => {
         </p>
 
         <Group>
-          <div className="upload-wrapper mb-6">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              {t('media.selectFile') || 'Chọn file để tải lên'}
-            </label>
-
-            <input
-              type="file"
-              multiple
-              accept="image/*,video/*,application/pdf"
+          <FileUploadInput
+              label={t('media.selectFile')}
+              helperText={t('media.allowedTypes')}
               onChange={handleFileChange}
-              className="block w-full text-sm text-gray-500
-                         file:mr-4 file:py-2 file:px-4
-                         file:rounded-full file:border-0
-                         file:text-sm file:font-semibold
-                         file:bg-blue-50 file:text-blue-700
-                         hover:file:bg-blue-100"
             />
-
-            <p className="text-xs text-gray-500 mt-1">
-              {t('media.allowedTypes') || 'Hỗ trợ: ảnh, video, PDF'}
-            </p>
-          </div>
         </Group>
 
         <Detail
@@ -132,6 +116,7 @@ const Media = () => {
           loading={loading}
           onView={(item) => setSelectedItem(item)} 
         />
+               
       </div>
     </Container>
   );

@@ -18,10 +18,9 @@ import Error505 from '../pages/Error/Error505/Error505';
 import Category from '../pages/Category/Category';
 import Brand from '../pages/Brand/Brand';
 import Media from '../pages/Media/Media';
-import BadRequest from '../pages/Error/Error400/Error400';
-import Forbidden from '../pages/Error/Error403/Error403';
 import Error400 from '../pages/Error/Error400/Error400';
 import Error403 from '../pages/Error/Error403/Error403';
+import AIGenerator from '../components/AIGenerator/AIGenerator';
 
 class AdminRootRedirect extends Component {
   static contextType = AuthContext;
@@ -98,6 +97,16 @@ class AppRoutes extends Component {
               </PrivateRoute>
             }
           />
+
+          <Route
+  path="/ai-generator"
+  element={
+    <PrivateRoute>
+      <AIGenerator />
+    </PrivateRoute>
+  }
+/>
+
 
           {/* ✅ Bắt mọi route không khớp */}
           <Route path="/admin/error/505" element={<Error505 />} />
