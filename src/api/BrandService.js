@@ -1,27 +1,21 @@
-import { apiRequest } from './../utils/apiClient';
+import ApiService from './ApiService';
 
 export default class BrandService {
   constructor() {
-    this.apiBaseUrl = 'http://localhost:8555/api';
-    this.tokenKey = 'admin_token';
+    const baseUrl = process.env.REACT_APP_API_BASE_URL;
+    const tokenKey = process.env.REACT_APP_TOKEN_KEY;
+    this.api = new ApiService(baseUrl, tokenKey);
   }
 
-  getToken() {
-    return localStorage.getItem(this.tokenKey);
+  getAll(options = {}) {
+    return this.api.get('/brand', options);
   }
 
-  async getAll() {
-    const token = this.getToken();
-    return apiRequest(`${this.apiBaseUrl}/brand`, 'GET', null, token);
+  getById(brandId, options = {}) {
+    return this.api.get(`/brand/${brandId}`, options);
   }
 
-  async getById(brandId) {
-    const token = this.getToken();
-    return apiRequest(`${this.apiBaseUrl}/brand/${brandId}`, 'GET', null, token);
-  }
-
-  async create(brandData) {
-    const token = this.getToken();
-    return apiRequest(`${this.apiBaseUrl}/brand/create`, 'POST', brandData, token);
+  create(brandData, options = {}) {
+    return this.api.post('/brand/create', brandData, options);
   }
 }

@@ -14,7 +14,6 @@ const DashboardHeader = () => {
         <Clock language="en" />
       </div>
       <NavBar />
-
     </header>
   );
 };

@@ -70,7 +70,7 @@ const Dashboard = () => {
   return (
     <div className="dashboard">
       <Container widthVariant="width-80" heightVariant="height-auto" className="dashboard-container">
-          <TokenCountdown />
+        <TokenCountdown />
         <DashboardHeader onLogout={handleLogout} />
         <DashboardContent progressData={progressData} />
       </Container>

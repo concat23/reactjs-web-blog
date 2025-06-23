@@ -1,29 +1,26 @@
-import { apiRequest } from '../utils/apiClient';
+import ApiService from './ApiService';
 
 export default class MediaService {
   constructor() {
-    this.apiBaseUrl = 'http://localhost:8555/api/cloudinary';
-    this.tokenKey = 'admin_token';
+    const baseUrl = process.env.REACT_APP_API_BASE_URL;
+    const tokenKey = process.env.REACT_APP_TOKEN_KEY;
+    this.api = new ApiService(baseUrl, tokenKey);
   }
 
-  getToken() {
-    const token = localStorage.getItem(this.tokenKey);
-    return token ? token.trim().replace(/[\r\n]+/g, '') : null;
+  upload(formData) {
+
+    return this.api.post('/cloudinary/upload', formData, 30000);
   }
 
-  async upload(formData) {
-    return apiRequest(`${this.apiBaseUrl}/upload`, 'POST', formData, this.getToken(),30000);
+  getAll() {
+    return this.api.get('/cloudinary/files');
   }
 
-  async getAll() {
-    return apiRequest(`${this.apiBaseUrl}/files`, 'GET', null, this.getToken());
+  get(publicId) {
+    return this.api.get(`/cloudinary/files/${publicId}`);
   }
 
-  async get(publicId) {
-    return apiRequest(`${this.apiBaseUrl}/files/${publicId}`, 'GET', null, this.getToken());
-  }
-
-  async delete(publicId) {
-    return apiRequest(`${this.apiBaseUrl}/files/${publicId}`, 'DELETE', null, this.getToken());
+  delete(publicId) {
+    return this.api.delete(`/cloudinary/files/${publicId}`);
   }
 }

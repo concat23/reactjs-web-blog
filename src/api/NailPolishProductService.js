@@ -1,88 +1,57 @@
-import { apiRequest } from '../utils/apiClient';
+import ApiService from './ApiService';
 
 export default class NailPolishProductService {
   constructor() {
-    this.apiBaseUrl = 'http://localhost:8555/api';
-    this.tokenKey = 'admin_token';
+    const baseUrl = process.env.REACT_APP_API_BASE_URL;
+    const tokenKey = process.env.REACT_APP_TOKEN_KEY;
+    this.api = new ApiService(baseUrl, tokenKey);
   }
 
-  // Lấy token từ localStorage mỗi lần gọi để đảm bảo token luôn mới nhất
-  getToken() {
-    return localStorage.getItem(this.tokenKey);
+  getAll() {
+    return this.api.get('/nail-polish-products');
   }
 
-  async getAll() {
-    return apiRequest(`${this.apiBaseUrl}/nail-polish-products`, 'GET', null, this.getToken());
+  getById(productId) {
+    return this.api.get(`/nail-polish-products/${productId}`);
   }
 
-  async getById(productId) {
-    return apiRequest(`${this.apiBaseUrl}/nail-polish-products/${productId}`, 'GET', null, this.getToken());
+  create(productData) {
+    return this.api.post('/nail-polish-products', productData);
   }
 
-  async create(productData) {
-    return apiRequest(`${this.apiBaseUrl}/nail-polish-products`, 'POST', productData, this.getToken());
+  update(productId, productData) {
+    return this.api.put(`/nail-polish-products/${productId}`, productData);
   }
 
-  async update(productId, productData) {
-    return apiRequest(`${this.apiBaseUrl}/nail-polish-products/${productId}`, 'PUT', productData, this.getToken());
-  }
-
-  async delete(productId) {
-    return apiRequest(`${this.apiBaseUrl}/nail-polish-products/${productId}`, 'DELETE', null, this.getToken());
+  delete(productId) {
+    return this.api.delete(`/nail-polish-products/${productId}`);
   }
 
   async uploadImages(productId, imageFiles) {
-   
     if (!productId || typeof productId !== 'number') {
       throw new Error('Invalid product ID');
     }
 
     if (!Array.isArray(imageFiles) || imageFiles.length === 0) {
-      throw new Error('No images provided for upload');
+      throw new Error('No images provided');
     }
 
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+    const maxSize = 5 * 1024 * 1024;
+
     const formData = new FormData();
-
     for (const file of imageFiles) {
-      if (!(file instanceof File)) {
-        throw new Error('Invalid file provided');
-      }
-
-      // Tuỳ chọn: kiểm tra loại file
-      const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
-      if (!allowedTypes.includes(file.type)) {
-        throw new Error(`File type ${file.type} is not allowed`);
-      }
-
-      const maxSize = 5 * 1024 * 1024;
-      if (file.size > maxSize) {
-        throw new Error(`File ${file.name} is too large (max 5MB)`);
-      }
-
+      if (!(file instanceof File)) throw new Error('Invalid file');
+      if (!allowedTypes.includes(file.type)) throw new Error(`File type ${file.type} not allowed`);
+      if (file.size > maxSize) throw new Error(`File ${file.name} too large (max 5MB)`);
       formData.append('images[]', file);
     }
 
-    try {
-      const response = await fetch(`${this.apiBaseUrl}/nail-polish-products/${productId}/upload-images`, {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${this.getToken()}`
-        },
-        body: formData,
-      });
-
-      if (!response.ok) {
-        const errorResponse = await response.json().catch(() => ({}));
-        const message = errorResponse.message || `Server error (${response.status})`;
-        throw new Error(message);
-      }
-
-      return await response.json();
-
-    } catch (error) {
-      console.error('Image upload failed:', error);
-      throw new Error(`Upload failed: ${error.message}`);
-    }
+    return this.api.request(
+      `/nail-polish-products/${productId}/upload-images`,
+      'POST',
+      formData,
+      { timeout: 30000 } 
+    );
   }
-
 }

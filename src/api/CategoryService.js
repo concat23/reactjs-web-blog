@@ -1,26 +1,21 @@
-import { apiRequest } from './../utils/apiClient';
+import ApiService from './ApiService';
 
 export default class CategoryService {
   constructor() {
-    this.apiBaseUrl = 'http://localhost:8555/api';
-    this.tokenKey = 'admin_token';
-    this.token = this.getToken();
+    const baseUrl = process.env.REACT_APP_API_BASE_URL;
+    const tokenKey = process.env.REACT_APP_TOKEN_KEY;
+    this.api = new ApiService(baseUrl, tokenKey);
   }
 
-  getToken() {
-    const token = localStorage.getItem(this.tokenKey);
-    return token ? token.trim().replace(/[\r\n]+/g, '') : null;
+  getAll() {
+    return this.api.get('/category');
   }
 
-  async getAll() {
-    return apiRequest(`${this.apiBaseUrl}/category`, 'GET', null, this.token);
+  getById(categoryId) {
+    return this.api.get(`/category/${categoryId}`);
   }
 
-  async getById(categoryId) {
-    return apiRequest(`${this.apiBaseUrl}/category/${categoryId}`, 'GET', null, this.token);
-  }
-
-  async create(categoryData) {
-    return apiRequest(`${this.apiBaseUrl}/category/create`, 'POST', categoryData, this.token);
+  create(categoryData) {
+    return this.api.post('/category/create', categoryData);
   }
 }
